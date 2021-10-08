@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["EndpointAccessType",""],["EndpointStatus",""]],"mod":[["endpoint","See `Endpoint`"],["network_interface","See `NetworkInterface`"]],"struct":[["Endpoint",""],["NetworkInterface",""]]});

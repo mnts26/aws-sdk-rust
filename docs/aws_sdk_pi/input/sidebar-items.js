@@ -1,0 +1,1 @@
+initSidebarItems({"mod":[["describe_dimension_keys_input","See `DescribeDimensionKeysInput`"],["get_dimension_key_details_input","See `GetDimensionKeyDetailsInput`"],["get_resource_metrics_input","See `GetResourceMetricsInput`"]],"struct":[["DescribeDimensionKeysInput",""],["GetDimensionKeyDetailsInput",""],["GetResourceMetricsInput",""]]});

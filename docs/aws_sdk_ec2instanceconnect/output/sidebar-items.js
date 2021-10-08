@@ -1,0 +1,1 @@
+initSidebarItems({"mod":[["send_serial_console_ssh_public_key_output","See `SendSerialConsoleSshPublicKeyOutput`"],["send_ssh_public_key_output","See `SendSshPublicKeyOutput`"]],"struct":[["SendSerialConsoleSshPublicKeyOutput",""],["SendSshPublicKeyOutput",""]]});

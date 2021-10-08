@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["Builder","Builder for [`ImdsRegionProvider`]"],["ImdsRegionProvider","IMDSv2 Region Provider"]]});

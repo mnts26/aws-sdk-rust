@@ -1,0 +1,1 @@
+initSidebarItems({"mod":[["describe_dimension_keys_output","See `DescribeDimensionKeysOutput`"],["get_dimension_key_details_output","See `GetDimensionKeyDetailsOutput`"],["get_resource_metrics_output","See `GetResourceMetricsOutput`"]],"struct":[["DescribeDimensionKeysOutput",""],["GetDimensionKeyDetailsOutput",""],["GetResourceMetricsOutput",""]]});

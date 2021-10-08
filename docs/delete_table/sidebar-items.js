@@ -1,0 +1,1 @@
+initSidebarItems({"fn":[["main","Deletes a DynamoDB table."]],"struct":[["Opt",""]]});

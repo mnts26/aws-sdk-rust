@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["ResourceType",""]],"mod":[["filter","See `Filter`"],["group","See `Group`"],["user","See `User`"]],"struct":[["Filter",""],["Group",""],["User",""]]});

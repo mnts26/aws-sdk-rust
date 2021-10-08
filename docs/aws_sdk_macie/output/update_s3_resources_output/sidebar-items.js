@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["Builder","A builder for `UpdateS3ResourcesOutput`"]]});

@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["CreateOrder",""],["CreateOutpost",""],["DeleteOutpost",""],["DeleteSite",""],["GetOutpost",""],["GetOutpostInstanceTypes",""],["ListOutposts",""],["ListSites",""],["ListTagsForResource",""],["TagResource",""],["UntagResource",""]]});

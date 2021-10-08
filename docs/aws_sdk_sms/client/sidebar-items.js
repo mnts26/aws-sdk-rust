@@ -1,0 +1,1 @@
+initSidebarItems({"mod":[["fluent_builders",""]],"struct":[["Builder","A builder that provides more customization options when constructing a [`Client`]."],["Client","An ergonomic service client for `AWSServerMigrationService_V2016_10_24`."]]});

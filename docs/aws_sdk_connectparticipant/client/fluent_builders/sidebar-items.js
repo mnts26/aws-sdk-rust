@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["CompleteAttachmentUpload",""],["CreateParticipantConnection",""],["DisconnectParticipant",""],["GetAttachment",""],["GetTranscript",""],["SendEvent",""],["SendMessage",""],["StartAttachmentUpload",""]]});

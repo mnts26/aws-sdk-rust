@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["DeleteThingShadow",""],["GetRetainedMessage",""],["GetThingShadow",""],["ListNamedShadowsForThing",""],["ListRetainedMessages",""],["Publish",""],["UpdateThingShadow",""]]});

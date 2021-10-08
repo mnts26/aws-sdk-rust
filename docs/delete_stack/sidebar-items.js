@@ -1,0 +1,1 @@
+initSidebarItems({"fn":[["main","Deletes a CloudFormation stack."]],"struct":[["Opt",""]]});

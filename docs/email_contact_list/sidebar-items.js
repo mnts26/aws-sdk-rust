@@ -1,0 +1,1 @@
+initSidebarItems({"fn":[["main","Sends a message to the email addresses in the contact list."]],"struct":[["Opt",""]]});

@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["Format",""],["ReportFrequency",""],["S3BucketRegion",""]],"mod":[["report_definition","See `ReportDefinition`"],["s3_location","See `S3Location`"],["source_s3_location","See `SourceS3Location`"]],"struct":[["ReportDefinition",""],["S3Location",""],["SourceS3Location",""]]});

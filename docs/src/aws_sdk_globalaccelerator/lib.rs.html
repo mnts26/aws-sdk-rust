@@ -1,0 +1,374 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `globalaccelerator&#x2F;src&#x2F;lib.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>lib.rs - source</title><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled ><script id="default-settings" ></script><script src="../../storage.js"></script><script src="../../crates.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../favicon.svg"><style type="text/css">#crate-search{background-image:url("../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../aws_sdk_globalaccelerator/index.html'><div class='logo-container rust-logo'><img src='../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="18" height="18" alt="Pick another theme!" src="../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../settings.html" title="settings"><img width="18" height="18" alt="Change settings" src="../../wheel.svg"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">  1</span>
+<span id="2">  2</span>
+<span id="3">  3</span>
+<span id="4">  4</span>
+<span id="5">  5</span>
+<span id="6">  6</span>
+<span id="7">  7</span>
+<span id="8">  8</span>
+<span id="9">  9</span>
+<span id="10"> 10</span>
+<span id="11"> 11</span>
+<span id="12"> 12</span>
+<span id="13"> 13</span>
+<span id="14"> 14</span>
+<span id="15"> 15</span>
+<span id="16"> 16</span>
+<span id="17"> 17</span>
+<span id="18"> 18</span>
+<span id="19"> 19</span>
+<span id="20"> 20</span>
+<span id="21"> 21</span>
+<span id="22"> 22</span>
+<span id="23"> 23</span>
+<span id="24"> 24</span>
+<span id="25"> 25</span>
+<span id="26"> 26</span>
+<span id="27"> 27</span>
+<span id="28"> 28</span>
+<span id="29"> 29</span>
+<span id="30"> 30</span>
+<span id="31"> 31</span>
+<span id="32"> 32</span>
+<span id="33"> 33</span>
+<span id="34"> 34</span>
+<span id="35"> 35</span>
+<span id="36"> 36</span>
+<span id="37"> 37</span>
+<span id="38"> 38</span>
+<span id="39"> 39</span>
+<span id="40"> 40</span>
+<span id="41"> 41</span>
+<span id="42"> 42</span>
+<span id="43"> 43</span>
+<span id="44"> 44</span>
+<span id="45"> 45</span>
+<span id="46"> 46</span>
+<span id="47"> 47</span>
+<span id="48"> 48</span>
+<span id="49"> 49</span>
+<span id="50"> 50</span>
+<span id="51"> 51</span>
+<span id="52"> 52</span>
+<span id="53"> 53</span>
+<span id="54"> 54</span>
+<span id="55"> 55</span>
+<span id="56"> 56</span>
+<span id="57"> 57</span>
+<span id="58"> 58</span>
+<span id="59"> 59</span>
+<span id="60"> 60</span>
+<span id="61"> 61</span>
+<span id="62"> 62</span>
+<span id="63"> 63</span>
+<span id="64"> 64</span>
+<span id="65"> 65</span>
+<span id="66"> 66</span>
+<span id="67"> 67</span>
+<span id="68"> 68</span>
+<span id="69"> 69</span>
+<span id="70"> 70</span>
+<span id="71"> 71</span>
+<span id="72"> 72</span>
+<span id="73"> 73</span>
+<span id="74"> 74</span>
+<span id="75"> 75</span>
+<span id="76"> 76</span>
+<span id="77"> 77</span>
+<span id="78"> 78</span>
+<span id="79"> 79</span>
+<span id="80"> 80</span>
+<span id="81"> 81</span>
+<span id="82"> 82</span>
+<span id="83"> 83</span>
+<span id="84"> 84</span>
+<span id="85"> 85</span>
+<span id="86"> 86</span>
+<span id="87"> 87</span>
+<span id="88"> 88</span>
+<span id="89"> 89</span>
+<span id="90"> 90</span>
+<span id="91"> 91</span>
+<span id="92"> 92</span>
+<span id="93"> 93</span>
+<span id="94"> 94</span>
+<span id="95"> 95</span>
+<span id="96"> 96</span>
+<span id="97"> 97</span>
+<span id="98"> 98</span>
+<span id="99"> 99</span>
+<span id="100">100</span>
+<span id="101">101</span>
+<span id="102">102</span>
+<span id="103">103</span>
+<span id="104">104</span>
+<span id="105">105</span>
+<span id="106">106</span>
+<span id="107">107</span>
+<span id="108">108</span>
+<span id="109">109</span>
+<span id="110">110</span>
+<span id="111">111</span>
+<span id="112">112</span>
+<span id="113">113</span>
+<span id="114">114</span>
+<span id="115">115</span>
+<span id="116">116</span>
+<span id="117">117</span>
+<span id="118">118</span>
+<span id="119">119</span>
+<span id="120">120</span>
+<span id="121">121</span>
+<span id="122">122</span>
+<span id="123">123</span>
+<span id="124">124</span>
+<span id="125">125</span>
+<span id="126">126</span>
+<span id="127">127</span>
+<span id="128">128</span>
+<span id="129">129</span>
+<span id="130">130</span>
+<span id="131">131</span>
+<span id="132">132</span>
+<span id="133">133</span>
+<span id="134">134</span>
+<span id="135">135</span>
+<span id="136">136</span>
+<span id="137">137</span>
+<span id="138">138</span>
+<span id="139">139</span>
+<span id="140">140</span>
+<span id="141">141</span>
+<span id="142">142</span>
+<span id="143">143</span>
+<span id="144">144</span>
+<span id="145">145</span>
+<span id="146">146</span>
+<span id="147">147</span>
+<span id="148">148</span>
+<span id="149">149</span>
+<span id="150">150</span>
+<span id="151">151</span>
+<span id="152">152</span>
+<span id="153">153</span>
+<span id="154">154</span>
+<span id="155">155</span>
+<span id="156">156</span>
+<span id="157">157</span>
+<span id="158">158</span>
+<span id="159">159</span>
+<span id="160">160</span>
+<span id="161">161</span>
+<span id="162">162</span>
+<span id="163">163</span>
+<span id="164">164</span>
+<span id="165">165</span>
+<span id="166">166</span>
+<span id="167">167</span>
+<span id="168">168</span>
+<span id="169">169</span>
+<span id="170">170</span>
+<span id="171">171</span>
+<span id="172">172</span>
+<span id="173">173</span>
+<span id="174">174</span>
+<span id="175">175</span>
+<span id="176">176</span>
+<span id="177">177</span>
+<span id="178">178</span>
+<span id="179">179</span>
+<span id="180">180</span>
+<span id="181">181</span>
+<span id="182">182</span>
+<span id="183">183</span>
+<span id="184">184</span>
+<span id="185">185</span>
+</pre><pre class="rust"><code><span class="attribute">#![<span class="ident">allow</span>(<span class="ident">clippy::module_inception</span>)]</span>
+<span class="attribute">#![<span class="ident">allow</span>(<span class="ident">clippy::upper_case_acronyms</span>)]</span>
+<span class="attribute">#![<span class="ident">allow</span>(<span class="ident">clippy::large_enum_variant</span>)]</span>
+<span class="attribute">#![<span class="ident">allow</span>(<span class="ident">clippy::wrong_self_convention</span>)]</span>
+<span class="attribute">#![<span class="ident">allow</span>(<span class="ident">clippy::should_implement_trait</span>)]</span>
+<span class="attribute">#![<span class="ident">allow</span>(<span class="ident">clippy::blacklisted_name</span>)]</span>
+<span class="attribute">#![<span class="ident">allow</span>(<span class="ident">clippy::vec_init_then_push</span>)]</span>
+<span class="doccomment">//! &lt;fullname&gt;AWS Global Accelerator&lt;/fullname&gt;</span>
+<span class="doccomment">//! &lt;p&gt;This is the &lt;i&gt;AWS Global Accelerator API Reference&lt;/i&gt;. This guide is for developers who need detailed information about</span>
+<span class="doccomment">//! AWS Global Accelerator API actions, data types, and errors. For more information about Global Accelerator features, see the</span>
+<span class="doccomment">//! &lt;a href=&quot;https://docs.aws.amazon.com/global-accelerator/latest/dg/Welcome.html&quot;&gt;AWS Global Accelerator Developer Guide&lt;/a&gt;.&lt;/p&gt;</span>
+<span class="doccomment">//! &lt;p&gt;AWS Global Accelerator is a service in which you create &lt;i&gt;accelerators&lt;/i&gt; to improve the performance</span>
+<span class="doccomment">//! of your applications for local and global users. Depending on the type of accelerator you choose, you can</span>
+<span class="doccomment">//! gain additional benefits. &lt;/p&gt;</span>
+<span class="doccomment">//! &lt;ul&gt;</span>
+<span class="doccomment">//! &lt;li&gt;</span>
+<span class="doccomment">//! &lt;p&gt;By using a standard accelerator, you can improve availability of your internet applications</span>
+<span class="doccomment">//! that are used by a global audience. With a standard accelerator, Global Accelerator directs traffic to optimal endpoints over the AWS</span>
+<span class="doccomment">//! global network. &lt;/p&gt;</span>
+<span class="doccomment">//! &lt;/li&gt;</span>
+<span class="doccomment">//! &lt;li&gt;</span>
+<span class="doccomment">//! &lt;p&gt;For other scenarios, you might choose a custom routing accelerator. With a custom routing accelerator, you</span>
+<span class="doccomment">//! can use application logic to directly map one or more users to a specific endpoint among many endpoints.&lt;/p&gt;</span>
+<span class="doccomment">//! &lt;/li&gt;</span>
+<span class="doccomment">//! &lt;/ul&gt;</span>
+<span class="doccomment">//! &lt;important&gt;</span>
+<span class="doccomment">//! &lt;p&gt;Global Accelerator is a global service that supports endpoints in multiple AWS Regions but you must specify the</span>
+<span class="doccomment">//! US West (Oregon) Region to create or update accelerators.&lt;/p&gt;</span>
+<span class="doccomment">//! &lt;/important&gt;</span>
+<span class="doccomment">//! &lt;p&gt;By default, Global Accelerator provides you with two static IP addresses that you associate with your accelerator. With</span>
+<span class="doccomment">//! a standard accelerator, instead of using the</span>
+<span class="doccomment">//! IP addresses that Global Accelerator provides, you can configure these entry points to be IPv4 addresses from your own IP address ranges</span>
+<span class="doccomment">//! that you bring to Global Accelerator. The static IP addresses are anycast from the AWS edge network. For a standard accelerator,</span>
+<span class="doccomment">//! they distribute incoming application traffic across multiple endpoint resources in multiple AWS Regions, which increases</span>
+<span class="doccomment">//! the availability of your applications. Endpoints for standard accelerators can be Network Load Balancers, Application Load Balancers,</span>
+<span class="doccomment">//! Amazon EC2 instances, or Elastic IP addresses that are located in one AWS Region or multiple Regions. For custom routing</span>
+<span class="doccomment">//! accelerators, you map traffic that arrives to the static IP addresses to specific Amazon EC2 servers in endpoints that</span>
+<span class="doccomment">//! are virtual private cloud (VPC) subnets.&lt;/p&gt;</span>
+<span class="doccomment">//! &lt;important&gt;</span>
+<span class="doccomment">//! &lt;p&gt;The static IP addresses remain assigned to your accelerator for as long as it exists, even if you</span>
+<span class="doccomment">//! disable the accelerator and it no longer accepts or routes traffic. However, when you</span>
+<span class="doccomment">//! &lt;i&gt;delete&lt;/i&gt; an accelerator, you lose the static IP addresses that</span>
+<span class="doccomment">//! are assigned to it, so you can no longer route traffic by using them. You can use</span>
+<span class="doccomment">//! IAM policies like tag-based permissions with Global Accelerator to limit the users who have</span>
+<span class="doccomment">//! permissions to delete an accelerator. For more information, see &lt;a href=&quot;https://docs.aws.amazon.com/global-accelerator/latest/dg/access-control-manage-access-tag-policies.html&quot;&gt;Tag-based policies&lt;/a&gt;.&lt;/p&gt;</span>
+<span class="doccomment">//! &lt;/important&gt;</span>
+<span class="doccomment">//! &lt;p&gt;For standard accelerators, Global Accelerator uses the AWS global network to route traffic to the optimal regional endpoint based</span>
+<span class="doccomment">//! on health, client location, and policies that you configure. The service reacts instantly to</span>
+<span class="doccomment">//! changes in health or configuration to ensure that internet traffic from clients is always</span>
+<span class="doccomment">//! directed to healthy endpoints.&lt;/p&gt;</span>
+<span class="doccomment">//! &lt;p&gt;For a list of the AWS Regions where Global Accelerator and other services are currently supported, see the</span>
+<span class="doccomment">//! &lt;a href=&quot;https://docs.aws.amazon.com/about-aws/global-infrastructure/regional-product-services/&quot;&gt;AWS</span>
+<span class="doccomment">//! Region Table&lt;/a&gt;.&lt;/p&gt;</span>
+<span class="doccomment">//! &lt;p&gt;AWS Global Accelerator includes the following components:&lt;/p&gt;</span>
+<span class="doccomment">//! &lt;dl&gt;</span>
+<span class="doccomment">//! &lt;dt&gt;Static IP addresses&lt;/dt&gt;</span>
+<span class="doccomment">//! &lt;dd&gt;</span>
+<span class="doccomment">//! &lt;p&gt;Global Accelerator provides you with a set of two static IP addresses that are anycast from the AWS edge</span>
+<span class="doccomment">//! network. If you bring your own IP address range to AWS (BYOIP) to use with a standard accelerator, you</span>
+<span class="doccomment">//! can instead assign IP addresses from your own pool to use with your accelerator. For more information,</span>
+<span class="doccomment">//! see &lt;a href=&quot;https://docs.aws.amazon.com/global-accelerator/latest/dg/using-byoip.html&quot;&gt;</span>
+<span class="doccomment">//! Bring your own IP addresses (BYOIP) in AWS Global Accelerator&lt;/a&gt;.&lt;/p&gt;</span>
+<span class="doccomment">//! &lt;p&gt;The IP addresses serve as single fixed entry points for your clients. If you already have Elastic</span>
+<span class="doccomment">//! Load Balancing load balancers, Amazon EC2 instances, or Elastic IP address resources set up for your applications,</span>
+<span class="doccomment">//! you can easily add those to a standard accelerator in Global Accelerator. This allows Global Accelerator to use static IP addresses</span>
+<span class="doccomment">//! to access the resources.&lt;/p&gt;</span>
+<span class="doccomment">//! &lt;p&gt;The static IP addresses remain assigned to your accelerator for as long as it exists, even</span>
+<span class="doccomment">//! if you disable the accelerator and it no longer accepts or routes traffic.</span>
+<span class="doccomment">//! However, when you &lt;i&gt;delete&lt;/i&gt; an accelerator, you lose the</span>
+<span class="doccomment">//! static IP addresses that are assigned to it, so you can no longer route</span>
+<span class="doccomment">//! traffic by using them. You can use IAM policies like tag-based permissions</span>
+<span class="doccomment">//! with Global Accelerator to delete an accelerator. For more information, see &lt;a href=&quot;https://docs.aws.amazon.com/global-accelerator/latest/dg/access-control-manage-access-tag-policies.html&quot;&gt;Tag-based policies&lt;/a&gt;.&lt;/p&gt;</span>
+<span class="doccomment">//! &lt;/dd&gt;</span>
+<span class="doccomment">//! &lt;dt&gt;Accelerator&lt;/dt&gt;</span>
+<span class="doccomment">//! &lt;dd&gt;</span>
+<span class="doccomment">//! &lt;p&gt;An accelerator directs traffic to endpoints over the AWS global network to improve the</span>
+<span class="doccomment">//! performance of your internet applications. Each accelerator includes one or more listeners.&lt;/p&gt;</span>
+<span class="doccomment">//! &lt;p&gt;There are two types of accelerators:&lt;/p&gt;</span>
+<span class="doccomment">//! &lt;ul&gt;</span>
+<span class="doccomment">//! &lt;li&gt;</span>
+<span class="doccomment">//! &lt;p&gt;A &lt;i&gt;standard&lt;/i&gt; accelerator directs traffic to the optimal AWS endpoint based</span>
+<span class="doccomment">//! on several factors, including the user’s location, the health of the endpoint, and the endpoint weights</span>
+<span class="doccomment">//! that you configure. This improves the availability and performance of your applications.</span>
+<span class="doccomment">//! Endpoints can be Network Load Balancers, Application Load Balancers, Amazon EC2 instances, or Elastic IP addresses.&lt;/p&gt;</span>
+<span class="doccomment">//! &lt;/li&gt;</span>
+<span class="doccomment">//! &lt;li&gt;</span>
+<span class="doccomment">//! &lt;p&gt;A &lt;i&gt;custom routing&lt;/i&gt; accelerator directs traffic to one of possibly thousands of</span>
+<span class="doccomment">//! Amazon EC2 instances running in a single or multiple virtual private</span>
+<span class="doccomment">//! clouds (VPCs). With custom routing, listener ports are mapped to</span>
+<span class="doccomment">//! statically associate port ranges with VPC subnets, which</span>
+<span class="doccomment">//! allows Global Accelerator to determine an EC2 instance IP address at the time of</span>
+<span class="doccomment">//! connection. By default, all port mapping destinations in a VPC</span>
+<span class="doccomment">//! subnet can&#39;t receive traffic. You can choose to configure all</span>
+<span class="doccomment">//! destinations in the subnet to receive traffic, or to specify</span>
+<span class="doccomment">//! individual port mappings that can receive traffic.&lt;/p&gt;</span>
+<span class="doccomment">//! &lt;/li&gt;</span>
+<span class="doccomment">//! &lt;/ul&gt;</span>
+<span class="doccomment">//! &lt;p&gt;For more information, see &lt;a href=&quot;https://docs.aws.amazon.com/global-accelerator/latest/dg/introduction-accelerator-types.html&quot;&gt;Types of accelerators&lt;/a&gt;.&lt;/p&gt;</span>
+<span class="doccomment">//! &lt;/dd&gt;</span>
+<span class="doccomment">//! &lt;dt&gt;DNS name&lt;/dt&gt;</span>
+<span class="doccomment">//! &lt;dd&gt;</span>
+<span class="doccomment">//! &lt;p&gt;Global Accelerator assigns each accelerator a default Domain Name System (DNS) name, similar to</span>
+<span class="doccomment">//! &lt;code&gt;a1234567890abcdef.awsglobalaccelerator.com&lt;/code&gt;, that points to</span>
+<span class="doccomment">//! the static IP addresses that Global Accelerator assigns to you or that you choose from your</span>
+<span class="doccomment">//! own IP address range. Depending on the use</span>
+<span class="doccomment">//! case, you can use your accelerator&#39;s static IP addresses or DNS name to</span>
+<span class="doccomment">//! route traffic to your accelerator, or set up DNS records to route traffic using</span>
+<span class="doccomment">//! your own custom domain name.&lt;/p&gt;</span>
+<span class="doccomment">//! &lt;/dd&gt;</span>
+<span class="doccomment">//! &lt;dt&gt;Network zone&lt;/dt&gt;</span>
+<span class="doccomment">//! &lt;dd&gt;</span>
+<span class="doccomment">//! &lt;p&gt;A network zone services the static IP addresses for your accelerator from a unique IP subnet. Similar to an</span>
+<span class="doccomment">//! AWS Availability Zone, a network zone is an isolated unit with its own set of physical infrastructure.</span>
+<span class="doccomment">//! When you configure an accelerator, by default, Global Accelerator allocates two IPv4 addresses for it. If one IP address from a</span>
+<span class="doccomment">//! network zone becomes unavailable due to IP address blocking by certain client networks, or network</span>
+<span class="doccomment">//! disruptions, then client applications can retry on the healthy static IP address from the other isolated</span>
+<span class="doccomment">//! network zone.&lt;/p&gt;</span>
+<span class="doccomment">//! &lt;/dd&gt;</span>
+<span class="doccomment">//! &lt;dt&gt;Listener&lt;/dt&gt;</span>
+<span class="doccomment">//! &lt;dd&gt;</span>
+<span class="doccomment">//! &lt;p&gt;A listener processes inbound connections from clients to Global Accelerator, based on the port (or port range)</span>
+<span class="doccomment">//! and protocol (or protocols) that you configure. A listener can be configured for TCP, UDP, or both TCP and UDP protocols. Each</span>
+<span class="doccomment">//! listener has one or more endpoint groups associated with it, and traffic is forwarded</span>
+<span class="doccomment">//! to endpoints in one of the groups. You associate endpoint groups with listeners by specifying the Regions that you</span>
+<span class="doccomment">//! want to distribute traffic to. With a standard accelerator, traffic is distributed to optimal endpoints within the endpoint</span>
+<span class="doccomment">//! groups associated with a listener.&lt;/p&gt;</span>
+<span class="doccomment">//! &lt;/dd&gt;</span>
+<span class="doccomment">//! &lt;dt&gt;Endpoint group&lt;/dt&gt;</span>
+<span class="doccomment">//! &lt;dd&gt;</span>
+<span class="doccomment">//! &lt;p&gt;Each endpoint group is associated with a specific AWS Region. Endpoint groups include one or</span>
+<span class="doccomment">//! more endpoints in the Region. With a standard accelerator, you can increase or reduce the percentage of</span>
+<span class="doccomment">//! traffic that would be otherwise directed to an endpoint group by adjusting a</span>
+<span class="doccomment">//! setting called a &lt;i&gt;traffic dial&lt;/i&gt;. The traffic dial lets</span>
+<span class="doccomment">//! you easily do performance testing or blue/green deployment testing, for example, for new</span>
+<span class="doccomment">//! releases across different AWS Regions. &lt;/p&gt;</span>
+<span class="doccomment">//! &lt;/dd&gt;</span>
+<span class="doccomment">//! &lt;dt&gt;Endpoint&lt;/dt&gt;</span>
+<span class="doccomment">//! &lt;dd&gt;</span>
+<span class="doccomment">//! &lt;p&gt;An endpoint is a resource that Global Accelerator directs traffic to.&lt;/p&gt;</span>
+<span class="doccomment">//! &lt;p&gt;Endpoints for standard accelerators can be Network Load Balancers, Application Load Balancers, Amazon EC2 instances, or Elastic IP</span>
+<span class="doccomment">//! addresses. An Application Load Balancer endpoint can be internet-facing or internal. Traffic for</span>
+<span class="doccomment">//! standard accelerators is routed to endpoints based on the health of the</span>
+<span class="doccomment">//! endpoint along with configuration options that you choose, such as endpoint</span>
+<span class="doccomment">//! weights. For each endpoint, you can configure weights, which are numbers</span>
+<span class="doccomment">//! that you can use to specify the proportion of traffic to route to each one.</span>
+<span class="doccomment">//! This can be useful, for example, to do performance testing within a</span>
+<span class="doccomment">//! Region.&lt;/p&gt;</span>
+<span class="doccomment">//! &lt;p&gt;Endpoints for custom routing accelerators are virtual private cloud (VPC) subnets with one</span>
+<span class="doccomment">//! or many EC2 instances.&lt;/p&gt;</span>
+<span class="doccomment">//! &lt;/dd&gt;</span>
+<span class="doccomment">//! &lt;/dl&gt;</span>
+
+<span class="comment">// Code generated by software.amazon.smithy.rust.codegen.smithy-rs. DO NOT EDIT.</span>
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">error_meta::Error</span>;
+
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">config::Config</span>;
+
+<span class="kw">mod</span> <span class="ident">aws_endpoint</span>;
+<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;client&quot;</span>)]</span>
+<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">client</span>;
+<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">config</span>;
+<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">error</span>;
+<span class="kw">mod</span> <span class="ident">error_meta</span>;
+<span class="kw">mod</span> <span class="ident">idempotency_token</span>;
+<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">input</span>;
+<span class="kw">mod</span> <span class="ident">json_deser</span>;
+<span class="kw">mod</span> <span class="ident">json_errors</span>;
+<span class="kw">mod</span> <span class="ident">json_ser</span>;
+<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">model</span>;
+<span class="kw">mod</span> <span class="ident">no_credentials</span>;
+<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">operation</span>;
+<span class="kw">mod</span> <span class="ident">operation_deser</span>;
+<span class="kw">mod</span> <span class="ident">operation_ser</span>;
+<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">output</span>;
+<span class="kw">pub</span> <span class="kw">static</span> <span class="ident">PKG_VERSION</span>: <span class="kw-2">&amp;</span><span class="ident">str</span> <span class="op">=</span> <span class="macro">env!</span>(<span class="string">&quot;CARGO_PKG_VERSION&quot;</span>);
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">smithy_http::byte_stream::ByteStream</span>;
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">smithy_http::result::SdkError</span>;
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">smithy_types::Blob</span>;
+<span class="kw">static</span> <span class="ident">API_METADATA</span>: <span class="ident">aws_http::user_agent::ApiMetadata</span> <span class="op">=</span>
+    <span class="ident">aws_http::user_agent::ApiMetadata::new</span>(<span class="string">&quot;globalaccelerator&quot;</span>, <span class="ident">PKG_VERSION</span>);
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">aws_types::region::Region</span>;
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">aws_types::Credentials</span>;
+<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;client&quot;</span>)]</span>
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">client::Client</span>;
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">smithy_http::endpoint::Endpoint</span>;
+</code></pre></div>
+</section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../" data-current-crate="aws_sdk_globalaccelerator" data-search-index-js="../../search-index.js" data-search-js="../../search.js"></div>
+    <script src="../../main.js"></script><script src="../../source-script.js"></script><script src="../../source-files.js"></script>
+</body></html>

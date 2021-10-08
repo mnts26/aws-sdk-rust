@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["DeleteReportDefinition",""],["GetReportDefinition",""],["ImportApplicationUsage",""],["ListReportDefinitions",""],["PutReportDefinition",""],["UpdateReportDefinition",""]]});

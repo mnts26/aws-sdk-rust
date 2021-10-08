@@ -1,0 +1,1170 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `firehose&#x2F;src&#x2F;operation.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>operation.rs - source</title><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled ><script id="default-settings" ></script><script src="../../storage.js"></script><script src="../../crates.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../favicon.svg"><style type="text/css">#crate-search{background-image:url("../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../aws_sdk_firehose/index.html'><div class='logo-container rust-logo'><img src='../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="18" height="18" alt="Pick another theme!" src="../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../settings.html" title="settings"><img width="18" height="18" alt="Change settings" src="../../wheel.svg"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">  1</span>
+<span id="2">  2</span>
+<span id="3">  3</span>
+<span id="4">  4</span>
+<span id="5">  5</span>
+<span id="6">  6</span>
+<span id="7">  7</span>
+<span id="8">  8</span>
+<span id="9">  9</span>
+<span id="10"> 10</span>
+<span id="11"> 11</span>
+<span id="12"> 12</span>
+<span id="13"> 13</span>
+<span id="14"> 14</span>
+<span id="15"> 15</span>
+<span id="16"> 16</span>
+<span id="17"> 17</span>
+<span id="18"> 18</span>
+<span id="19"> 19</span>
+<span id="20"> 20</span>
+<span id="21"> 21</span>
+<span id="22"> 22</span>
+<span id="23"> 23</span>
+<span id="24"> 24</span>
+<span id="25"> 25</span>
+<span id="26"> 26</span>
+<span id="27"> 27</span>
+<span id="28"> 28</span>
+<span id="29"> 29</span>
+<span id="30"> 30</span>
+<span id="31"> 31</span>
+<span id="32"> 32</span>
+<span id="33"> 33</span>
+<span id="34"> 34</span>
+<span id="35"> 35</span>
+<span id="36"> 36</span>
+<span id="37"> 37</span>
+<span id="38"> 38</span>
+<span id="39"> 39</span>
+<span id="40"> 40</span>
+<span id="41"> 41</span>
+<span id="42"> 42</span>
+<span id="43"> 43</span>
+<span id="44"> 44</span>
+<span id="45"> 45</span>
+<span id="46"> 46</span>
+<span id="47"> 47</span>
+<span id="48"> 48</span>
+<span id="49"> 49</span>
+<span id="50"> 50</span>
+<span id="51"> 51</span>
+<span id="52"> 52</span>
+<span id="53"> 53</span>
+<span id="54"> 54</span>
+<span id="55"> 55</span>
+<span id="56"> 56</span>
+<span id="57"> 57</span>
+<span id="58"> 58</span>
+<span id="59"> 59</span>
+<span id="60"> 60</span>
+<span id="61"> 61</span>
+<span id="62"> 62</span>
+<span id="63"> 63</span>
+<span id="64"> 64</span>
+<span id="65"> 65</span>
+<span id="66"> 66</span>
+<span id="67"> 67</span>
+<span id="68"> 68</span>
+<span id="69"> 69</span>
+<span id="70"> 70</span>
+<span id="71"> 71</span>
+<span id="72"> 72</span>
+<span id="73"> 73</span>
+<span id="74"> 74</span>
+<span id="75"> 75</span>
+<span id="76"> 76</span>
+<span id="77"> 77</span>
+<span id="78"> 78</span>
+<span id="79"> 79</span>
+<span id="80"> 80</span>
+<span id="81"> 81</span>
+<span id="82"> 82</span>
+<span id="83"> 83</span>
+<span id="84"> 84</span>
+<span id="85"> 85</span>
+<span id="86"> 86</span>
+<span id="87"> 87</span>
+<span id="88"> 88</span>
+<span id="89"> 89</span>
+<span id="90"> 90</span>
+<span id="91"> 91</span>
+<span id="92"> 92</span>
+<span id="93"> 93</span>
+<span id="94"> 94</span>
+<span id="95"> 95</span>
+<span id="96"> 96</span>
+<span id="97"> 97</span>
+<span id="98"> 98</span>
+<span id="99"> 99</span>
+<span id="100">100</span>
+<span id="101">101</span>
+<span id="102">102</span>
+<span id="103">103</span>
+<span id="104">104</span>
+<span id="105">105</span>
+<span id="106">106</span>
+<span id="107">107</span>
+<span id="108">108</span>
+<span id="109">109</span>
+<span id="110">110</span>
+<span id="111">111</span>
+<span id="112">112</span>
+<span id="113">113</span>
+<span id="114">114</span>
+<span id="115">115</span>
+<span id="116">116</span>
+<span id="117">117</span>
+<span id="118">118</span>
+<span id="119">119</span>
+<span id="120">120</span>
+<span id="121">121</span>
+<span id="122">122</span>
+<span id="123">123</span>
+<span id="124">124</span>
+<span id="125">125</span>
+<span id="126">126</span>
+<span id="127">127</span>
+<span id="128">128</span>
+<span id="129">129</span>
+<span id="130">130</span>
+<span id="131">131</span>
+<span id="132">132</span>
+<span id="133">133</span>
+<span id="134">134</span>
+<span id="135">135</span>
+<span id="136">136</span>
+<span id="137">137</span>
+<span id="138">138</span>
+<span id="139">139</span>
+<span id="140">140</span>
+<span id="141">141</span>
+<span id="142">142</span>
+<span id="143">143</span>
+<span id="144">144</span>
+<span id="145">145</span>
+<span id="146">146</span>
+<span id="147">147</span>
+<span id="148">148</span>
+<span id="149">149</span>
+<span id="150">150</span>
+<span id="151">151</span>
+<span id="152">152</span>
+<span id="153">153</span>
+<span id="154">154</span>
+<span id="155">155</span>
+<span id="156">156</span>
+<span id="157">157</span>
+<span id="158">158</span>
+<span id="159">159</span>
+<span id="160">160</span>
+<span id="161">161</span>
+<span id="162">162</span>
+<span id="163">163</span>
+<span id="164">164</span>
+<span id="165">165</span>
+<span id="166">166</span>
+<span id="167">167</span>
+<span id="168">168</span>
+<span id="169">169</span>
+<span id="170">170</span>
+<span id="171">171</span>
+<span id="172">172</span>
+<span id="173">173</span>
+<span id="174">174</span>
+<span id="175">175</span>
+<span id="176">176</span>
+<span id="177">177</span>
+<span id="178">178</span>
+<span id="179">179</span>
+<span id="180">180</span>
+<span id="181">181</span>
+<span id="182">182</span>
+<span id="183">183</span>
+<span id="184">184</span>
+<span id="185">185</span>
+<span id="186">186</span>
+<span id="187">187</span>
+<span id="188">188</span>
+<span id="189">189</span>
+<span id="190">190</span>
+<span id="191">191</span>
+<span id="192">192</span>
+<span id="193">193</span>
+<span id="194">194</span>
+<span id="195">195</span>
+<span id="196">196</span>
+<span id="197">197</span>
+<span id="198">198</span>
+<span id="199">199</span>
+<span id="200">200</span>
+<span id="201">201</span>
+<span id="202">202</span>
+<span id="203">203</span>
+<span id="204">204</span>
+<span id="205">205</span>
+<span id="206">206</span>
+<span id="207">207</span>
+<span id="208">208</span>
+<span id="209">209</span>
+<span id="210">210</span>
+<span id="211">211</span>
+<span id="212">212</span>
+<span id="213">213</span>
+<span id="214">214</span>
+<span id="215">215</span>
+<span id="216">216</span>
+<span id="217">217</span>
+<span id="218">218</span>
+<span id="219">219</span>
+<span id="220">220</span>
+<span id="221">221</span>
+<span id="222">222</span>
+<span id="223">223</span>
+<span id="224">224</span>
+<span id="225">225</span>
+<span id="226">226</span>
+<span id="227">227</span>
+<span id="228">228</span>
+<span id="229">229</span>
+<span id="230">230</span>
+<span id="231">231</span>
+<span id="232">232</span>
+<span id="233">233</span>
+<span id="234">234</span>
+<span id="235">235</span>
+<span id="236">236</span>
+<span id="237">237</span>
+<span id="238">238</span>
+<span id="239">239</span>
+<span id="240">240</span>
+<span id="241">241</span>
+<span id="242">242</span>
+<span id="243">243</span>
+<span id="244">244</span>
+<span id="245">245</span>
+<span id="246">246</span>
+<span id="247">247</span>
+<span id="248">248</span>
+<span id="249">249</span>
+<span id="250">250</span>
+<span id="251">251</span>
+<span id="252">252</span>
+<span id="253">253</span>
+<span id="254">254</span>
+<span id="255">255</span>
+<span id="256">256</span>
+<span id="257">257</span>
+<span id="258">258</span>
+<span id="259">259</span>
+<span id="260">260</span>
+<span id="261">261</span>
+<span id="262">262</span>
+<span id="263">263</span>
+<span id="264">264</span>
+<span id="265">265</span>
+<span id="266">266</span>
+<span id="267">267</span>
+<span id="268">268</span>
+<span id="269">269</span>
+<span id="270">270</span>
+<span id="271">271</span>
+<span id="272">272</span>
+<span id="273">273</span>
+<span id="274">274</span>
+<span id="275">275</span>
+<span id="276">276</span>
+<span id="277">277</span>
+<span id="278">278</span>
+<span id="279">279</span>
+<span id="280">280</span>
+<span id="281">281</span>
+<span id="282">282</span>
+<span id="283">283</span>
+<span id="284">284</span>
+<span id="285">285</span>
+<span id="286">286</span>
+<span id="287">287</span>
+<span id="288">288</span>
+<span id="289">289</span>
+<span id="290">290</span>
+<span id="291">291</span>
+<span id="292">292</span>
+<span id="293">293</span>
+<span id="294">294</span>
+<span id="295">295</span>
+<span id="296">296</span>
+<span id="297">297</span>
+<span id="298">298</span>
+<span id="299">299</span>
+<span id="300">300</span>
+<span id="301">301</span>
+<span id="302">302</span>
+<span id="303">303</span>
+<span id="304">304</span>
+<span id="305">305</span>
+<span id="306">306</span>
+<span id="307">307</span>
+<span id="308">308</span>
+<span id="309">309</span>
+<span id="310">310</span>
+<span id="311">311</span>
+<span id="312">312</span>
+<span id="313">313</span>
+<span id="314">314</span>
+<span id="315">315</span>
+<span id="316">316</span>
+<span id="317">317</span>
+<span id="318">318</span>
+<span id="319">319</span>
+<span id="320">320</span>
+<span id="321">321</span>
+<span id="322">322</span>
+<span id="323">323</span>
+<span id="324">324</span>
+<span id="325">325</span>
+<span id="326">326</span>
+<span id="327">327</span>
+<span id="328">328</span>
+<span id="329">329</span>
+<span id="330">330</span>
+<span id="331">331</span>
+<span id="332">332</span>
+<span id="333">333</span>
+<span id="334">334</span>
+<span id="335">335</span>
+<span id="336">336</span>
+<span id="337">337</span>
+<span id="338">338</span>
+<span id="339">339</span>
+<span id="340">340</span>
+<span id="341">341</span>
+<span id="342">342</span>
+<span id="343">343</span>
+<span id="344">344</span>
+<span id="345">345</span>
+<span id="346">346</span>
+<span id="347">347</span>
+<span id="348">348</span>
+<span id="349">349</span>
+<span id="350">350</span>
+<span id="351">351</span>
+<span id="352">352</span>
+<span id="353">353</span>
+<span id="354">354</span>
+<span id="355">355</span>
+<span id="356">356</span>
+<span id="357">357</span>
+<span id="358">358</span>
+<span id="359">359</span>
+<span id="360">360</span>
+<span id="361">361</span>
+<span id="362">362</span>
+<span id="363">363</span>
+<span id="364">364</span>
+<span id="365">365</span>
+<span id="366">366</span>
+<span id="367">367</span>
+<span id="368">368</span>
+<span id="369">369</span>
+<span id="370">370</span>
+<span id="371">371</span>
+<span id="372">372</span>
+<span id="373">373</span>
+<span id="374">374</span>
+<span id="375">375</span>
+<span id="376">376</span>
+<span id="377">377</span>
+<span id="378">378</span>
+<span id="379">379</span>
+<span id="380">380</span>
+<span id="381">381</span>
+<span id="382">382</span>
+<span id="383">383</span>
+<span id="384">384</span>
+<span id="385">385</span>
+<span id="386">386</span>
+<span id="387">387</span>
+<span id="388">388</span>
+<span id="389">389</span>
+<span id="390">390</span>
+<span id="391">391</span>
+<span id="392">392</span>
+<span id="393">393</span>
+<span id="394">394</span>
+<span id="395">395</span>
+<span id="396">396</span>
+<span id="397">397</span>
+<span id="398">398</span>
+<span id="399">399</span>
+<span id="400">400</span>
+<span id="401">401</span>
+<span id="402">402</span>
+<span id="403">403</span>
+<span id="404">404</span>
+<span id="405">405</span>
+<span id="406">406</span>
+<span id="407">407</span>
+<span id="408">408</span>
+<span id="409">409</span>
+<span id="410">410</span>
+<span id="411">411</span>
+<span id="412">412</span>
+<span id="413">413</span>
+<span id="414">414</span>
+<span id="415">415</span>
+<span id="416">416</span>
+<span id="417">417</span>
+<span id="418">418</span>
+<span id="419">419</span>
+<span id="420">420</span>
+<span id="421">421</span>
+<span id="422">422</span>
+<span id="423">423</span>
+<span id="424">424</span>
+<span id="425">425</span>
+<span id="426">426</span>
+<span id="427">427</span>
+<span id="428">428</span>
+<span id="429">429</span>
+<span id="430">430</span>
+<span id="431">431</span>
+<span id="432">432</span>
+<span id="433">433</span>
+<span id="434">434</span>
+<span id="435">435</span>
+<span id="436">436</span>
+<span id="437">437</span>
+<span id="438">438</span>
+<span id="439">439</span>
+<span id="440">440</span>
+<span id="441">441</span>
+<span id="442">442</span>
+<span id="443">443</span>
+<span id="444">444</span>
+<span id="445">445</span>
+<span id="446">446</span>
+<span id="447">447</span>
+<span id="448">448</span>
+<span id="449">449</span>
+<span id="450">450</span>
+<span id="451">451</span>
+<span id="452">452</span>
+<span id="453">453</span>
+<span id="454">454</span>
+<span id="455">455</span>
+<span id="456">456</span>
+<span id="457">457</span>
+<span id="458">458</span>
+<span id="459">459</span>
+<span id="460">460</span>
+<span id="461">461</span>
+<span id="462">462</span>
+<span id="463">463</span>
+<span id="464">464</span>
+<span id="465">465</span>
+<span id="466">466</span>
+<span id="467">467</span>
+<span id="468">468</span>
+<span id="469">469</span>
+<span id="470">470</span>
+<span id="471">471</span>
+<span id="472">472</span>
+<span id="473">473</span>
+<span id="474">474</span>
+<span id="475">475</span>
+<span id="476">476</span>
+<span id="477">477</span>
+<span id="478">478</span>
+<span id="479">479</span>
+<span id="480">480</span>
+<span id="481">481</span>
+<span id="482">482</span>
+<span id="483">483</span>
+<span id="484">484</span>
+<span id="485">485</span>
+<span id="486">486</span>
+<span id="487">487</span>
+<span id="488">488</span>
+<span id="489">489</span>
+<span id="490">490</span>
+<span id="491">491</span>
+<span id="492">492</span>
+<span id="493">493</span>
+<span id="494">494</span>
+<span id="495">495</span>
+<span id="496">496</span>
+<span id="497">497</span>
+<span id="498">498</span>
+<span id="499">499</span>
+<span id="500">500</span>
+<span id="501">501</span>
+<span id="502">502</span>
+<span id="503">503</span>
+<span id="504">504</span>
+<span id="505">505</span>
+<span id="506">506</span>
+<span id="507">507</span>
+<span id="508">508</span>
+<span id="509">509</span>
+<span id="510">510</span>
+<span id="511">511</span>
+<span id="512">512</span>
+<span id="513">513</span>
+<span id="514">514</span>
+<span id="515">515</span>
+<span id="516">516</span>
+<span id="517">517</span>
+<span id="518">518</span>
+<span id="519">519</span>
+<span id="520">520</span>
+<span id="521">521</span>
+<span id="522">522</span>
+<span id="523">523</span>
+<span id="524">524</span>
+<span id="525">525</span>
+<span id="526">526</span>
+<span id="527">527</span>
+<span id="528">528</span>
+<span id="529">529</span>
+<span id="530">530</span>
+<span id="531">531</span>
+<span id="532">532</span>
+<span id="533">533</span>
+<span id="534">534</span>
+<span id="535">535</span>
+<span id="536">536</span>
+<span id="537">537</span>
+<span id="538">538</span>
+<span id="539">539</span>
+<span id="540">540</span>
+<span id="541">541</span>
+<span id="542">542</span>
+<span id="543">543</span>
+<span id="544">544</span>
+<span id="545">545</span>
+<span id="546">546</span>
+<span id="547">547</span>
+<span id="548">548</span>
+<span id="549">549</span>
+<span id="550">550</span>
+<span id="551">551</span>
+<span id="552">552</span>
+<span id="553">553</span>
+<span id="554">554</span>
+<span id="555">555</span>
+<span id="556">556</span>
+<span id="557">557</span>
+<span id="558">558</span>
+<span id="559">559</span>
+<span id="560">560</span>
+<span id="561">561</span>
+<span id="562">562</span>
+<span id="563">563</span>
+<span id="564">564</span>
+<span id="565">565</span>
+<span id="566">566</span>
+<span id="567">567</span>
+<span id="568">568</span>
+<span id="569">569</span>
+<span id="570">570</span>
+<span id="571">571</span>
+<span id="572">572</span>
+<span id="573">573</span>
+<span id="574">574</span>
+<span id="575">575</span>
+<span id="576">576</span>
+<span id="577">577</span>
+<span id="578">578</span>
+<span id="579">579</span>
+<span id="580">580</span>
+<span id="581">581</span>
+<span id="582">582</span>
+<span id="583">583</span>
+</pre><pre class="rust"><code><span class="comment">// Code generated by software.amazon.smithy.rust.codegen.smithy-rs. DO NOT EDIT.</span>
+<span class="doccomment">/// &lt;p&gt;Creates a Kinesis Data Firehose delivery stream.&lt;/p&gt;</span>
+<span class="doccomment">/// &lt;p&gt;By default, you can create up to 50 delivery streams per AWS Region.&lt;/p&gt;</span>
+<span class="doccomment">/// &lt;p&gt;This is an asynchronous operation that immediately returns. The initial status of the</span>
+<span class="doccomment">/// delivery stream is &lt;code&gt;CREATING&lt;/code&gt;. After the delivery stream is created, its status</span>
+<span class="doccomment">/// is &lt;code&gt;ACTIVE&lt;/code&gt; and it now accepts data. If the delivery stream creation fails, the</span>
+<span class="doccomment">/// status transitions to &lt;code&gt;CREATING_FAILED&lt;/code&gt;. Attempts to send data to a delivery</span>
+<span class="doccomment">/// stream that is not in the &lt;code&gt;ACTIVE&lt;/code&gt; state cause an exception. To check the state</span>
+<span class="doccomment">/// of a delivery stream, use &lt;a&gt;DescribeDeliveryStream&lt;/a&gt;.&lt;/p&gt;</span>
+<span class="doccomment">/// &lt;p&gt;If the status of a delivery stream is &lt;code&gt;CREATING_FAILED&lt;/code&gt;, this status</span>
+<span class="doccomment">/// doesn&#39;t change, and you can&#39;t invoke &lt;code&gt;CreateDeliveryStream&lt;/code&gt; again on it.</span>
+<span class="doccomment">/// However, you can invoke the &lt;a&gt;DeleteDeliveryStream&lt;/a&gt; operation to delete</span>
+<span class="doccomment">/// it.&lt;/p&gt;</span>
+<span class="doccomment">/// &lt;p&gt;A Kinesis Data Firehose delivery stream can be configured to receive records directly</span>
+<span class="doccomment">/// from providers using &lt;a&gt;PutRecord&lt;/a&gt; or &lt;a&gt;PutRecordBatch&lt;/a&gt;, or it</span>
+<span class="doccomment">/// can be configured to use an existing Kinesis stream as its source. To specify a Kinesis</span>
+<span class="doccomment">/// data stream as input, set the &lt;code&gt;DeliveryStreamType&lt;/code&gt; parameter to</span>
+<span class="doccomment">/// &lt;code&gt;KinesisStreamAsSource&lt;/code&gt;, and provide the Kinesis stream Amazon Resource Name</span>
+<span class="doccomment">/// (ARN) and role ARN in the &lt;code&gt;KinesisStreamSourceConfiguration&lt;/code&gt;</span>
+<span class="doccomment">/// parameter.&lt;/p&gt;</span>
+<span class="doccomment">/// &lt;p&gt;To create a delivery stream with server-side encryption (SSE) enabled, include &lt;a&gt;DeliveryStreamEncryptionConfigurationInput&lt;/a&gt; in your request. This is</span>
+<span class="doccomment">/// optional. You can also invoke &lt;a&gt;StartDeliveryStreamEncryption&lt;/a&gt; to turn on</span>
+<span class="doccomment">/// SSE for an existing delivery stream that doesn&#39;t have SSE enabled.&lt;/p&gt;</span>
+<span class="doccomment">/// &lt;p&gt;A delivery stream is configured with a single destination: Amazon S3, Amazon ES,</span>
+<span class="doccomment">/// Amazon Redshift, or Splunk. You must specify only one of the following destination</span>
+<span class="doccomment">/// configuration parameters: &lt;code&gt;ExtendedS3DestinationConfiguration&lt;/code&gt;,</span>
+<span class="doccomment">/// &lt;code&gt;S3DestinationConfiguration&lt;/code&gt;,</span>
+<span class="doccomment">/// &lt;code&gt;ElasticsearchDestinationConfiguration&lt;/code&gt;,</span>
+<span class="doccomment">/// &lt;code&gt;RedshiftDestinationConfiguration&lt;/code&gt;, or</span>
+<span class="doccomment">/// &lt;code&gt;SplunkDestinationConfiguration&lt;/code&gt;.&lt;/p&gt;</span>
+<span class="doccomment">/// &lt;p&gt;When you specify &lt;code&gt;S3DestinationConfiguration&lt;/code&gt;, you can also provide the</span>
+<span class="doccomment">/// following optional values: BufferingHints, &lt;code&gt;EncryptionConfiguration&lt;/code&gt;, and</span>
+<span class="doccomment">/// &lt;code&gt;CompressionFormat&lt;/code&gt;. By default, if no &lt;code&gt;BufferingHints&lt;/code&gt; value is</span>
+<span class="doccomment">/// provided, Kinesis Data Firehose buffers data up to 5 MB or for 5 minutes, whichever</span>
+<span class="doccomment">/// condition is satisfied first. &lt;code&gt;BufferingHints&lt;/code&gt; is a hint, so there are some</span>
+<span class="doccomment">/// cases where the service cannot adhere to these conditions strictly. For example, record</span>
+<span class="doccomment">/// boundaries might be such that the size is a little over or under the configured buffering</span>
+<span class="doccomment">/// size. By default, no encryption is performed. We strongly recommend that you enable</span>
+<span class="doccomment">/// encryption to ensure secure data storage in Amazon S3.&lt;/p&gt;</span>
+<span class="doccomment">/// &lt;p&gt;A few notes about Amazon Redshift as a destination:&lt;/p&gt;</span>
+<span class="doccomment">/// &lt;ul&gt;</span>
+<span class="doccomment">/// &lt;li&gt;</span>
+<span class="doccomment">/// &lt;p&gt;An Amazon Redshift destination requires an S3 bucket as intermediate location.</span>
+<span class="doccomment">/// Kinesis Data Firehose first delivers data to Amazon S3 and then uses</span>
+<span class="doccomment">/// &lt;code&gt;COPY&lt;/code&gt; syntax to load data into an Amazon Redshift table. This is</span>
+<span class="doccomment">/// specified in the &lt;code&gt;RedshiftDestinationConfiguration.S3Configuration&lt;/code&gt;</span>
+<span class="doccomment">/// parameter.&lt;/p&gt;</span>
+<span class="doccomment">/// &lt;/li&gt;</span>
+<span class="doccomment">/// &lt;li&gt;</span>
+<span class="doccomment">/// &lt;p&gt;The compression formats &lt;code&gt;SNAPPY&lt;/code&gt; or &lt;code&gt;ZIP&lt;/code&gt; cannot be</span>
+<span class="doccomment">/// specified in &lt;code&gt;RedshiftDestinationConfiguration.S3Configuration&lt;/code&gt; because</span>
+<span class="doccomment">/// the Amazon Redshift &lt;code&gt;COPY&lt;/code&gt; operation that reads from the S3 bucket doesn&#39;t</span>
+<span class="doccomment">/// support these compression formats.&lt;/p&gt;</span>
+<span class="doccomment">/// &lt;/li&gt;</span>
+<span class="doccomment">/// &lt;li&gt;</span>
+<span class="doccomment">/// &lt;p&gt;We strongly recommend that you use the user name and password you provide</span>
+<span class="doccomment">/// exclusively with Kinesis Data Firehose, and that the permissions for the account are</span>
+<span class="doccomment">/// restricted for Amazon Redshift &lt;code&gt;INSERT&lt;/code&gt; permissions.&lt;/p&gt;</span>
+<span class="doccomment">/// &lt;/li&gt;</span>
+<span class="doccomment">/// &lt;/ul&gt;</span>
+<span class="doccomment">/// &lt;p&gt;Kinesis Data Firehose assumes the IAM role that is configured as part of the</span>
+<span class="doccomment">/// destination. The role should allow the Kinesis Data Firehose principal to assume the role,</span>
+<span class="doccomment">/// and the role should have permissions that allow the service to deliver the data. For more</span>
+<span class="doccomment">/// information, see &lt;a href=&quot;https://docs.aws.amazon.com/firehose/latest/dev/controlling-access.html#using-iam-s3&quot;&gt;Grant Kinesis Data</span>
+<span class="doccomment">/// Firehose Access to an Amazon S3 Destination&lt;/a&gt; in the &lt;i&gt;Amazon Kinesis Data</span>
+<span class="doccomment">/// Firehose Developer Guide&lt;/i&gt;.&lt;/p&gt;</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">std::default::Default</span>, <span class="ident">std::clone::Clone</span>, <span class="ident">std::fmt::Debug</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">CreateDeliveryStream</span> {
+    <span class="ident">_private</span>: (),
+}
+<span class="kw">impl</span> <span class="ident">CreateDeliveryStream</span> {
+    <span class="doccomment">/// Creates a new builder-style object to manufacture [`CreateDeliveryStreamInput`](crate::input::CreateDeliveryStreamInput)</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">builder</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident"><span class="kw">crate</span>::input::create_delivery_stream_input::Builder</span> {
+        <span class="ident"><span class="kw">crate</span>::input::create_delivery_stream_input::Builder::default</span>()
+    }
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+        <span class="self">Self</span> { <span class="ident">_private</span>: () }
+    }
+}
+<span class="kw">impl</span> <span class="ident">smithy_http::response::ParseStrictResponse</span> <span class="kw">for</span> <span class="ident">CreateDeliveryStream</span> {
+    <span class="kw">type</span> <span class="ident">Output</span> <span class="op">=</span> <span class="ident">std::result::Result</span><span class="op">&lt;</span>
+        <span class="ident"><span class="kw">crate</span>::output::CreateDeliveryStreamOutput</span>,
+        <span class="ident"><span class="kw">crate</span>::error::CreateDeliveryStreamError</span>,
+    <span class="op">&gt;</span>;
+    <span class="kw">fn</span> <span class="ident">parse</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">response</span>: <span class="kw-2">&amp;</span><span class="ident">http::Response</span><span class="op">&lt;</span><span class="ident">bytes::Bytes</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident"><span class="self">Self</span>::Output</span> {
+        <span class="kw">if</span> <span class="op">!</span><span class="ident">response</span>.<span class="ident">status</span>().<span class="ident">is_success</span>() <span class="op">&amp;&amp;</span> <span class="ident">response</span>.<span class="ident">status</span>().<span class="ident">as_u16</span>() <span class="op">!</span><span class="op">=</span> <span class="number">200</span> {
+            <span class="ident"><span class="kw">crate</span>::operation_deser::parse_create_delivery_stream_error</span>(<span class="ident">response</span>)
+        } <span class="kw">else</span> {
+            <span class="ident"><span class="kw">crate</span>::operation_deser::parse_create_delivery_stream_response</span>(<span class="ident">response</span>)
+        }
+    }
+}
+
+<span class="doccomment">/// &lt;p&gt;Deletes a delivery stream and its data.&lt;/p&gt;</span>
+<span class="doccomment">/// &lt;p&gt;To check the state of a delivery stream, use &lt;a&gt;DescribeDeliveryStream&lt;/a&gt;. You can delete a delivery stream only if it is in one of the following states:</span>
+<span class="doccomment">/// &lt;code&gt;ACTIVE&lt;/code&gt;, &lt;code&gt;DELETING&lt;/code&gt;, &lt;code&gt;CREATING_FAILED&lt;/code&gt;, or</span>
+<span class="doccomment">/// &lt;code&gt;DELETING_FAILED&lt;/code&gt;. You can&#39;t delete a delivery stream that is in the</span>
+<span class="doccomment">/// &lt;code&gt;CREATING&lt;/code&gt; state. While the deletion request is in process, the delivery</span>
+<span class="doccomment">/// stream is in the &lt;code&gt;DELETING&lt;/code&gt; state.&lt;/p&gt;</span>
+<span class="doccomment">/// &lt;p&gt;While the delivery stream is in the &lt;code&gt;DELETING&lt;/code&gt; state, the service might</span>
+<span class="doccomment">/// continue to accept records, but it doesn&#39;t make any guarantees with respect to delivering</span>
+<span class="doccomment">/// the data. Therefore, as a best practice, first stop any applications that are sending</span>
+<span class="doccomment">/// records before you delete a delivery stream.&lt;/p&gt;</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">std::default::Default</span>, <span class="ident">std::clone::Clone</span>, <span class="ident">std::fmt::Debug</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">DeleteDeliveryStream</span> {
+    <span class="ident">_private</span>: (),
+}
+<span class="kw">impl</span> <span class="ident">DeleteDeliveryStream</span> {
+    <span class="doccomment">/// Creates a new builder-style object to manufacture [`DeleteDeliveryStreamInput`](crate::input::DeleteDeliveryStreamInput)</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">builder</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident"><span class="kw">crate</span>::input::delete_delivery_stream_input::Builder</span> {
+        <span class="ident"><span class="kw">crate</span>::input::delete_delivery_stream_input::Builder::default</span>()
+    }
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+        <span class="self">Self</span> { <span class="ident">_private</span>: () }
+    }
+}
+<span class="kw">impl</span> <span class="ident">smithy_http::response::ParseStrictResponse</span> <span class="kw">for</span> <span class="ident">DeleteDeliveryStream</span> {
+    <span class="kw">type</span> <span class="ident">Output</span> <span class="op">=</span> <span class="ident">std::result::Result</span><span class="op">&lt;</span>
+        <span class="ident"><span class="kw">crate</span>::output::DeleteDeliveryStreamOutput</span>,
+        <span class="ident"><span class="kw">crate</span>::error::DeleteDeliveryStreamError</span>,
+    <span class="op">&gt;</span>;
+    <span class="kw">fn</span> <span class="ident">parse</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">response</span>: <span class="kw-2">&amp;</span><span class="ident">http::Response</span><span class="op">&lt;</span><span class="ident">bytes::Bytes</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident"><span class="self">Self</span>::Output</span> {
+        <span class="kw">if</span> <span class="op">!</span><span class="ident">response</span>.<span class="ident">status</span>().<span class="ident">is_success</span>() <span class="op">&amp;&amp;</span> <span class="ident">response</span>.<span class="ident">status</span>().<span class="ident">as_u16</span>() <span class="op">!</span><span class="op">=</span> <span class="number">200</span> {
+            <span class="ident"><span class="kw">crate</span>::operation_deser::parse_delete_delivery_stream_error</span>(<span class="ident">response</span>)
+        } <span class="kw">else</span> {
+            <span class="ident"><span class="kw">crate</span>::operation_deser::parse_delete_delivery_stream_response</span>(<span class="ident">response</span>)
+        }
+    }
+}
+
+<span class="doccomment">/// &lt;p&gt;Describes the specified delivery stream and its status. For example, after your</span>
+<span class="doccomment">/// delivery stream is created, call &lt;code&gt;DescribeDeliveryStream&lt;/code&gt; to see whether the</span>
+<span class="doccomment">/// delivery stream is &lt;code&gt;ACTIVE&lt;/code&gt; and therefore ready for data to be sent to it. &lt;/p&gt;</span>
+<span class="doccomment">/// &lt;p&gt;If the status of a delivery stream is &lt;code&gt;CREATING_FAILED&lt;/code&gt;, this status</span>
+<span class="doccomment">/// doesn&#39;t change, and you can&#39;t invoke &lt;a&gt;CreateDeliveryStream&lt;/a&gt; again on it.</span>
+<span class="doccomment">/// However, you can invoke the &lt;a&gt;DeleteDeliveryStream&lt;/a&gt; operation to delete it.</span>
+<span class="doccomment">/// If the status is &lt;code&gt;DELETING_FAILED&lt;/code&gt;, you can force deletion by invoking &lt;a&gt;DeleteDeliveryStream&lt;/a&gt; again but with &lt;a&gt;DeleteDeliveryStreamInput$AllowForceDelete&lt;/a&gt; set to true.&lt;/p&gt;</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">std::default::Default</span>, <span class="ident">std::clone::Clone</span>, <span class="ident">std::fmt::Debug</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">DescribeDeliveryStream</span> {
+    <span class="ident">_private</span>: (),
+}
+<span class="kw">impl</span> <span class="ident">DescribeDeliveryStream</span> {
+    <span class="doccomment">/// Creates a new builder-style object to manufacture [`DescribeDeliveryStreamInput`](crate::input::DescribeDeliveryStreamInput)</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">builder</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident"><span class="kw">crate</span>::input::describe_delivery_stream_input::Builder</span> {
+        <span class="ident"><span class="kw">crate</span>::input::describe_delivery_stream_input::Builder::default</span>()
+    }
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+        <span class="self">Self</span> { <span class="ident">_private</span>: () }
+    }
+}
+<span class="kw">impl</span> <span class="ident">smithy_http::response::ParseStrictResponse</span> <span class="kw">for</span> <span class="ident">DescribeDeliveryStream</span> {
+    <span class="kw">type</span> <span class="ident">Output</span> <span class="op">=</span> <span class="ident">std::result::Result</span><span class="op">&lt;</span>
+        <span class="ident"><span class="kw">crate</span>::output::DescribeDeliveryStreamOutput</span>,
+        <span class="ident"><span class="kw">crate</span>::error::DescribeDeliveryStreamError</span>,
+    <span class="op">&gt;</span>;
+    <span class="kw">fn</span> <span class="ident">parse</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">response</span>: <span class="kw-2">&amp;</span><span class="ident">http::Response</span><span class="op">&lt;</span><span class="ident">bytes::Bytes</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident"><span class="self">Self</span>::Output</span> {
+        <span class="kw">if</span> <span class="op">!</span><span class="ident">response</span>.<span class="ident">status</span>().<span class="ident">is_success</span>() <span class="op">&amp;&amp;</span> <span class="ident">response</span>.<span class="ident">status</span>().<span class="ident">as_u16</span>() <span class="op">!</span><span class="op">=</span> <span class="number">200</span> {
+            <span class="ident"><span class="kw">crate</span>::operation_deser::parse_describe_delivery_stream_error</span>(<span class="ident">response</span>)
+        } <span class="kw">else</span> {
+            <span class="ident"><span class="kw">crate</span>::operation_deser::parse_describe_delivery_stream_response</span>(<span class="ident">response</span>)
+        }
+    }
+}
+
+<span class="doccomment">/// &lt;p&gt;Lists your delivery streams in alphabetical order of their names.&lt;/p&gt;</span>
+<span class="doccomment">/// &lt;p&gt;The number of delivery streams might be too large to return using a single call to</span>
+<span class="doccomment">/// &lt;code&gt;ListDeliveryStreams&lt;/code&gt;. You can limit the number of delivery streams returned,</span>
+<span class="doccomment">/// using the &lt;code&gt;Limit&lt;/code&gt; parameter. To determine whether there are more delivery</span>
+<span class="doccomment">/// streams to list, check the value of &lt;code&gt;HasMoreDeliveryStreams&lt;/code&gt; in the output. If</span>
+<span class="doccomment">/// there are more delivery streams to list, you can request them by calling this operation</span>
+<span class="doccomment">/// again and setting the &lt;code&gt;ExclusiveStartDeliveryStreamName&lt;/code&gt; parameter to the name</span>
+<span class="doccomment">/// of the last delivery stream returned in the last call.&lt;/p&gt;</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">std::default::Default</span>, <span class="ident">std::clone::Clone</span>, <span class="ident">std::fmt::Debug</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ListDeliveryStreams</span> {
+    <span class="ident">_private</span>: (),
+}
+<span class="kw">impl</span> <span class="ident">ListDeliveryStreams</span> {
+    <span class="doccomment">/// Creates a new builder-style object to manufacture [`ListDeliveryStreamsInput`](crate::input::ListDeliveryStreamsInput)</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">builder</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident"><span class="kw">crate</span>::input::list_delivery_streams_input::Builder</span> {
+        <span class="ident"><span class="kw">crate</span>::input::list_delivery_streams_input::Builder::default</span>()
+    }
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+        <span class="self">Self</span> { <span class="ident">_private</span>: () }
+    }
+}
+<span class="kw">impl</span> <span class="ident">smithy_http::response::ParseStrictResponse</span> <span class="kw">for</span> <span class="ident">ListDeliveryStreams</span> {
+    <span class="kw">type</span> <span class="ident">Output</span> <span class="op">=</span> <span class="ident">std::result::Result</span><span class="op">&lt;</span>
+        <span class="ident"><span class="kw">crate</span>::output::ListDeliveryStreamsOutput</span>,
+        <span class="ident"><span class="kw">crate</span>::error::ListDeliveryStreamsError</span>,
+    <span class="op">&gt;</span>;
+    <span class="kw">fn</span> <span class="ident">parse</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">response</span>: <span class="kw-2">&amp;</span><span class="ident">http::Response</span><span class="op">&lt;</span><span class="ident">bytes::Bytes</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident"><span class="self">Self</span>::Output</span> {
+        <span class="kw">if</span> <span class="op">!</span><span class="ident">response</span>.<span class="ident">status</span>().<span class="ident">is_success</span>() <span class="op">&amp;&amp;</span> <span class="ident">response</span>.<span class="ident">status</span>().<span class="ident">as_u16</span>() <span class="op">!</span><span class="op">=</span> <span class="number">200</span> {
+            <span class="ident"><span class="kw">crate</span>::operation_deser::parse_list_delivery_streams_error</span>(<span class="ident">response</span>)
+        } <span class="kw">else</span> {
+            <span class="ident"><span class="kw">crate</span>::operation_deser::parse_list_delivery_streams_response</span>(<span class="ident">response</span>)
+        }
+    }
+}
+
+<span class="doccomment">/// &lt;p&gt;Lists the tags for the specified delivery stream. This operation has a limit of five</span>
+<span class="doccomment">/// transactions per second per account. &lt;/p&gt;</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">std::default::Default</span>, <span class="ident">std::clone::Clone</span>, <span class="ident">std::fmt::Debug</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ListTagsForDeliveryStream</span> {
+    <span class="ident">_private</span>: (),
+}
+<span class="kw">impl</span> <span class="ident">ListTagsForDeliveryStream</span> {
+    <span class="doccomment">/// Creates a new builder-style object to manufacture [`ListTagsForDeliveryStreamInput`](crate::input::ListTagsForDeliveryStreamInput)</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">builder</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident"><span class="kw">crate</span>::input::list_tags_for_delivery_stream_input::Builder</span> {
+        <span class="ident"><span class="kw">crate</span>::input::list_tags_for_delivery_stream_input::Builder::default</span>()
+    }
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+        <span class="self">Self</span> { <span class="ident">_private</span>: () }
+    }
+}
+<span class="kw">impl</span> <span class="ident">smithy_http::response::ParseStrictResponse</span> <span class="kw">for</span> <span class="ident">ListTagsForDeliveryStream</span> {
+    <span class="kw">type</span> <span class="ident">Output</span> <span class="op">=</span> <span class="ident">std::result::Result</span><span class="op">&lt;</span>
+        <span class="ident"><span class="kw">crate</span>::output::ListTagsForDeliveryStreamOutput</span>,
+        <span class="ident"><span class="kw">crate</span>::error::ListTagsForDeliveryStreamError</span>,
+    <span class="op">&gt;</span>;
+    <span class="kw">fn</span> <span class="ident">parse</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">response</span>: <span class="kw-2">&amp;</span><span class="ident">http::Response</span><span class="op">&lt;</span><span class="ident">bytes::Bytes</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident"><span class="self">Self</span>::Output</span> {
+        <span class="kw">if</span> <span class="op">!</span><span class="ident">response</span>.<span class="ident">status</span>().<span class="ident">is_success</span>() <span class="op">&amp;&amp;</span> <span class="ident">response</span>.<span class="ident">status</span>().<span class="ident">as_u16</span>() <span class="op">!</span><span class="op">=</span> <span class="number">200</span> {
+            <span class="ident"><span class="kw">crate</span>::operation_deser::parse_list_tags_for_delivery_stream_error</span>(<span class="ident">response</span>)
+        } <span class="kw">else</span> {
+            <span class="ident"><span class="kw">crate</span>::operation_deser::parse_list_tags_for_delivery_stream_response</span>(<span class="ident">response</span>)
+        }
+    }
+}
+
+<span class="doccomment">/// &lt;p&gt;Writes a single data record into an Amazon Kinesis Data Firehose delivery stream. To</span>
+<span class="doccomment">/// write multiple data records into a delivery stream, use &lt;a&gt;PutRecordBatch&lt;/a&gt;.</span>
+<span class="doccomment">/// Applications using these operations are referred to as producers.&lt;/p&gt;</span>
+<span class="doccomment">/// &lt;p&gt;By default, each delivery stream can take in up to 2,000 transactions per second,</span>
+<span class="doccomment">/// 5,000 records per second, or 5 MB per second. If you use &lt;a&gt;PutRecord&lt;/a&gt; and</span>
+<span class="doccomment">/// &lt;a&gt;PutRecordBatch&lt;/a&gt;, the limits are an aggregate across these two</span>
+<span class="doccomment">/// operations for each delivery stream. For more information about limits and how to request</span>
+<span class="doccomment">/// an increase, see &lt;a href=&quot;https://docs.aws.amazon.com/firehose/latest/dev/limits.html&quot;&gt;Amazon</span>
+<span class="doccomment">/// Kinesis Data Firehose Limits&lt;/a&gt;. &lt;/p&gt;</span>
+<span class="doccomment">/// &lt;p&gt;You must specify the name of the delivery stream and the data record when using &lt;a&gt;PutRecord&lt;/a&gt;. The data record consists of a data blob that can be up to 1,000</span>
+<span class="doccomment">/// KiB in size, and any kind of data. For example, it can be a segment from a log file,</span>
+<span class="doccomment">/// geographic location data, website clickstream data, and so on.&lt;/p&gt;</span>
+<span class="doccomment">/// &lt;p&gt;Kinesis Data Firehose buffers records before delivering them to the destination. To</span>
+<span class="doccomment">/// disambiguate the data blobs at the destination, a common solution is to use delimiters in</span>
+<span class="doccomment">/// the data, such as a newline (&lt;code&gt;\n&lt;/code&gt;) or some other character unique within the</span>
+<span class="doccomment">/// data. This allows the consumer application to parse individual data items when reading the</span>
+<span class="doccomment">/// data from the destination.&lt;/p&gt;</span>
+<span class="doccomment">/// &lt;p&gt;The &lt;code&gt;PutRecord&lt;/code&gt; operation returns a &lt;code&gt;RecordId&lt;/code&gt;, which is a</span>
+<span class="doccomment">/// unique string assigned to each record. Producer applications can use this ID for purposes</span>
+<span class="doccomment">/// such as auditability and investigation.&lt;/p&gt;</span>
+<span class="doccomment">/// &lt;p&gt;If the &lt;code&gt;PutRecord&lt;/code&gt; operation throws a</span>
+<span class="doccomment">/// &lt;code&gt;ServiceUnavailableException&lt;/code&gt;, back off and retry. If the exception persists,</span>
+<span class="doccomment">/// it is possible that the throughput limits have been exceeded for the delivery stream. &lt;/p&gt;</span>
+<span class="doccomment">/// &lt;p&gt;Data records sent to Kinesis Data Firehose are stored for 24 hours from the time they</span>
+<span class="doccomment">/// are added to a delivery stream as it tries to send the records to the destination. If the</span>
+<span class="doccomment">/// destination is unreachable for more than 24 hours, the data is no longer</span>
+<span class="doccomment">/// available.&lt;/p&gt;</span>
+<span class="doccomment">/// &lt;important&gt;</span>
+<span class="doccomment">/// &lt;p&gt;Don&#39;t concatenate two or more base64 strings to form the data fields of your records.</span>
+<span class="doccomment">/// Instead, concatenate the raw data, then perform base64 encoding.&lt;/p&gt;</span>
+<span class="doccomment">/// &lt;/important&gt;</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">std::default::Default</span>, <span class="ident">std::clone::Clone</span>, <span class="ident">std::fmt::Debug</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">PutRecord</span> {
+    <span class="ident">_private</span>: (),
+}
+<span class="kw">impl</span> <span class="ident">PutRecord</span> {
+    <span class="doccomment">/// Creates a new builder-style object to manufacture [`PutRecordInput`](crate::input::PutRecordInput)</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">builder</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident"><span class="kw">crate</span>::input::put_record_input::Builder</span> {
+        <span class="ident"><span class="kw">crate</span>::input::put_record_input::Builder::default</span>()
+    }
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+        <span class="self">Self</span> { <span class="ident">_private</span>: () }
+    }
+}
+<span class="kw">impl</span> <span class="ident">smithy_http::response::ParseStrictResponse</span> <span class="kw">for</span> <span class="ident">PutRecord</span> {
+    <span class="kw">type</span> <span class="ident">Output</span> <span class="op">=</span> <span class="ident">std::result::Result</span><span class="op">&lt;</span><span class="ident"><span class="kw">crate</span>::output::PutRecordOutput</span>, <span class="ident"><span class="kw">crate</span>::error::PutRecordError</span><span class="op">&gt;</span>;
+    <span class="kw">fn</span> <span class="ident">parse</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">response</span>: <span class="kw-2">&amp;</span><span class="ident">http::Response</span><span class="op">&lt;</span><span class="ident">bytes::Bytes</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident"><span class="self">Self</span>::Output</span> {
+        <span class="kw">if</span> <span class="op">!</span><span class="ident">response</span>.<span class="ident">status</span>().<span class="ident">is_success</span>() <span class="op">&amp;&amp;</span> <span class="ident">response</span>.<span class="ident">status</span>().<span class="ident">as_u16</span>() <span class="op">!</span><span class="op">=</span> <span class="number">200</span> {
+            <span class="ident"><span class="kw">crate</span>::operation_deser::parse_put_record_error</span>(<span class="ident">response</span>)
+        } <span class="kw">else</span> {
+            <span class="ident"><span class="kw">crate</span>::operation_deser::parse_put_record_response</span>(<span class="ident">response</span>)
+        }
+    }
+}
+
+<span class="doccomment">/// &lt;p&gt;Writes multiple data records into a delivery stream in a single call, which can</span>
+<span class="doccomment">/// achieve higher throughput per producer than when writing single records. To write single</span>
+<span class="doccomment">/// data records into a delivery stream, use &lt;a&gt;PutRecord&lt;/a&gt;. Applications using</span>
+<span class="doccomment">/// these operations are referred to as producers.&lt;/p&gt;</span>
+<span class="doccomment">/// &lt;p&gt;For information about service quota, see &lt;a href=&quot;https://docs.aws.amazon.com/firehose/latest/dev/limits.html&quot;&gt;Amazon Kinesis Data Firehose</span>
+<span class="doccomment">/// Quota&lt;/a&gt;.&lt;/p&gt;</span>
+<span class="doccomment">/// &lt;p&gt;Each &lt;a&gt;PutRecordBatch&lt;/a&gt; request supports up to 500 records. Each record</span>
+<span class="doccomment">/// in the request can be as large as 1,000 KB (before base64 encoding), up to a limit of 4 MB</span>
+<span class="doccomment">/// for the entire request. These limits cannot be changed.&lt;/p&gt;</span>
+<span class="doccomment">/// &lt;p&gt;You must specify the name of the delivery stream and the data record when using &lt;a&gt;PutRecord&lt;/a&gt;. The data record consists of a data blob that can be up to 1,000</span>
+<span class="doccomment">/// KB in size, and any kind of data. For example, it could be a segment from a log file,</span>
+<span class="doccomment">/// geographic location data, website clickstream data, and so on.&lt;/p&gt;</span>
+<span class="doccomment">/// &lt;p&gt;Kinesis Data Firehose buffers records before delivering them to the destination. To</span>
+<span class="doccomment">/// disambiguate the data blobs at the destination, a common solution is to use delimiters in</span>
+<span class="doccomment">/// the data, such as a newline (&lt;code&gt;\n&lt;/code&gt;) or some other character unique within the</span>
+<span class="doccomment">/// data. This allows the consumer application to parse individual data items when reading the</span>
+<span class="doccomment">/// data from the destination.&lt;/p&gt;</span>
+<span class="doccomment">/// &lt;p&gt;The &lt;a&gt;PutRecordBatch&lt;/a&gt; response includes a count of failed records,</span>
+<span class="doccomment">/// &lt;code&gt;FailedPutCount&lt;/code&gt;, and an array of responses, &lt;code&gt;RequestResponses&lt;/code&gt;.</span>
+<span class="doccomment">/// Even if the &lt;a&gt;PutRecordBatch&lt;/a&gt; call succeeds, the value of</span>
+<span class="doccomment">/// &lt;code&gt;FailedPutCount&lt;/code&gt; may be greater than 0, indicating that there are records for</span>
+<span class="doccomment">/// which the operation didn&#39;t succeed. Each entry in the &lt;code&gt;RequestResponses&lt;/code&gt; array</span>
+<span class="doccomment">/// provides additional information about the processed record. It directly correlates with a</span>
+<span class="doccomment">/// record in the request array using the same ordering, from the top to the bottom. The</span>
+<span class="doccomment">/// response array always includes the same number of records as the request array.</span>
+<span class="doccomment">/// &lt;code&gt;RequestResponses&lt;/code&gt; includes both successfully and unsuccessfully processed</span>
+<span class="doccomment">/// records. Kinesis Data Firehose tries to process all records in each &lt;a&gt;PutRecordBatch&lt;/a&gt; request. A single record failure does not stop the processing</span>
+<span class="doccomment">/// of subsequent records. &lt;/p&gt;</span>
+<span class="doccomment">/// &lt;p&gt;A successfully processed record includes a &lt;code&gt;RecordId&lt;/code&gt; value, which is</span>
+<span class="doccomment">/// unique for the record. An unsuccessfully processed record includes &lt;code&gt;ErrorCode&lt;/code&gt;</span>
+<span class="doccomment">/// and &lt;code&gt;ErrorMessage&lt;/code&gt; values. &lt;code&gt;ErrorCode&lt;/code&gt; reflects the type of error,</span>
+<span class="doccomment">/// and is one of the following values: &lt;code&gt;ServiceUnavailableException&lt;/code&gt; or</span>
+<span class="doccomment">/// &lt;code&gt;InternalFailure&lt;/code&gt;. &lt;code&gt;ErrorMessage&lt;/code&gt; provides more detailed</span>
+<span class="doccomment">/// information about the error.&lt;/p&gt;</span>
+<span class="doccomment">/// &lt;p&gt;If there is an internal server error or a timeout, the write might have completed or</span>
+<span class="doccomment">/// it might have failed. If &lt;code&gt;FailedPutCount&lt;/code&gt; is greater than 0, retry the request,</span>
+<span class="doccomment">/// resending only those records that might have failed processing. This minimizes the possible</span>
+<span class="doccomment">/// duplicate records and also reduces the total bytes sent (and corresponding charges). We</span>
+<span class="doccomment">/// recommend that you handle any duplicates at the destination.&lt;/p&gt;</span>
+<span class="doccomment">/// &lt;p&gt;If &lt;a&gt;PutRecordBatch&lt;/a&gt; throws &lt;code&gt;ServiceUnavailableException&lt;/code&gt;,</span>
+<span class="doccomment">/// back off and retry. If the exception persists, it is possible that the throughput limits</span>
+<span class="doccomment">/// have been exceeded for the delivery stream.&lt;/p&gt;</span>
+<span class="doccomment">/// &lt;p&gt;Data records sent to Kinesis Data Firehose are stored for 24 hours from the time they</span>
+<span class="doccomment">/// are added to a delivery stream as it attempts to send the records to the destination. If</span>
+<span class="doccomment">/// the destination is unreachable for more than 24 hours, the data is no longer</span>
+<span class="doccomment">/// available.&lt;/p&gt;</span>
+<span class="doccomment">/// &lt;important&gt;</span>
+<span class="doccomment">/// &lt;p&gt;Don&#39;t concatenate two or more base64 strings to form the data fields of your records.</span>
+<span class="doccomment">/// Instead, concatenate the raw data, then perform base64 encoding.&lt;/p&gt;</span>
+<span class="doccomment">/// &lt;/important&gt;</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">std::default::Default</span>, <span class="ident">std::clone::Clone</span>, <span class="ident">std::fmt::Debug</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">PutRecordBatch</span> {
+    <span class="ident">_private</span>: (),
+}
+<span class="kw">impl</span> <span class="ident">PutRecordBatch</span> {
+    <span class="doccomment">/// Creates a new builder-style object to manufacture [`PutRecordBatchInput`](crate::input::PutRecordBatchInput)</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">builder</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident"><span class="kw">crate</span>::input::put_record_batch_input::Builder</span> {
+        <span class="ident"><span class="kw">crate</span>::input::put_record_batch_input::Builder::default</span>()
+    }
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+        <span class="self">Self</span> { <span class="ident">_private</span>: () }
+    }
+}
+<span class="kw">impl</span> <span class="ident">smithy_http::response::ParseStrictResponse</span> <span class="kw">for</span> <span class="ident">PutRecordBatch</span> {
+    <span class="kw">type</span> <span class="ident">Output</span> <span class="op">=</span>
+        <span class="ident">std::result::Result</span><span class="op">&lt;</span><span class="ident"><span class="kw">crate</span>::output::PutRecordBatchOutput</span>, <span class="ident"><span class="kw">crate</span>::error::PutRecordBatchError</span><span class="op">&gt;</span>;
+    <span class="kw">fn</span> <span class="ident">parse</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">response</span>: <span class="kw-2">&amp;</span><span class="ident">http::Response</span><span class="op">&lt;</span><span class="ident">bytes::Bytes</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident"><span class="self">Self</span>::Output</span> {
+        <span class="kw">if</span> <span class="op">!</span><span class="ident">response</span>.<span class="ident">status</span>().<span class="ident">is_success</span>() <span class="op">&amp;&amp;</span> <span class="ident">response</span>.<span class="ident">status</span>().<span class="ident">as_u16</span>() <span class="op">!</span><span class="op">=</span> <span class="number">200</span> {
+            <span class="ident"><span class="kw">crate</span>::operation_deser::parse_put_record_batch_error</span>(<span class="ident">response</span>)
+        } <span class="kw">else</span> {
+            <span class="ident"><span class="kw">crate</span>::operation_deser::parse_put_record_batch_response</span>(<span class="ident">response</span>)
+        }
+    }
+}
+
+<span class="doccomment">/// &lt;p&gt;Enables server-side encryption (SSE) for the delivery stream. &lt;/p&gt;</span>
+<span class="doccomment">/// &lt;p&gt;This operation is asynchronous. It returns immediately. When you invoke it, Kinesis Data</span>
+<span class="doccomment">/// Firehose first sets the encryption status of the stream to &lt;code&gt;ENABLING&lt;/code&gt;, and then</span>
+<span class="doccomment">/// to &lt;code&gt;ENABLED&lt;/code&gt;. The encryption status of a delivery stream is the</span>
+<span class="doccomment">/// &lt;code&gt;Status&lt;/code&gt; property in &lt;a&gt;DeliveryStreamEncryptionConfiguration&lt;/a&gt;.</span>
+<span class="doccomment">/// If the operation fails, the encryption status changes to &lt;code&gt;ENABLING_FAILED&lt;/code&gt;. You</span>
+<span class="doccomment">/// can continue to read and write data to your delivery stream while the encryption status is</span>
+<span class="doccomment">/// &lt;code&gt;ENABLING&lt;/code&gt;, but the data is not encrypted. It can take up to 5 seconds after</span>
+<span class="doccomment">/// the encryption status changes to &lt;code&gt;ENABLED&lt;/code&gt; before all records written to the</span>
+<span class="doccomment">/// delivery stream are encrypted. To find out whether a record or a batch of records was</span>
+<span class="doccomment">/// encrypted, check the response elements &lt;a&gt;PutRecordOutput$Encrypted&lt;/a&gt; and</span>
+<span class="doccomment">/// &lt;a&gt;PutRecordBatchOutput$Encrypted&lt;/a&gt;, respectively.&lt;/p&gt;</span>
+<span class="doccomment">/// &lt;p&gt;To check the encryption status of a delivery stream, use &lt;a&gt;DescribeDeliveryStream&lt;/a&gt;.&lt;/p&gt;</span>
+<span class="doccomment">/// &lt;p&gt;Even if encryption is currently enabled for a delivery stream, you can still invoke this</span>
+<span class="doccomment">/// operation on it to change the ARN of the CMK or both its type and ARN. If you invoke this</span>
+<span class="doccomment">/// method to change the CMK, and the old CMK is of type &lt;code&gt;CUSTOMER_MANAGED_CMK&lt;/code&gt;,</span>
+<span class="doccomment">/// Kinesis Data Firehose schedules the grant it had on the old CMK for retirement. If the new</span>
+<span class="doccomment">/// CMK is of type &lt;code&gt;CUSTOMER_MANAGED_CMK&lt;/code&gt;, Kinesis Data Firehose creates a grant</span>
+<span class="doccomment">/// that enables it to use the new CMK to encrypt and decrypt data and to manage the</span>
+<span class="doccomment">/// grant.&lt;/p&gt;</span>
+<span class="doccomment">/// &lt;p&gt;If a delivery stream already has encryption enabled and then you invoke this operation</span>
+<span class="doccomment">/// to change the ARN of the CMK or both its type and ARN and you get</span>
+<span class="doccomment">/// &lt;code&gt;ENABLING_FAILED&lt;/code&gt;, this only means that the attempt to change the CMK failed.</span>
+<span class="doccomment">/// In this case, encryption remains enabled with the old CMK.&lt;/p&gt;</span>
+<span class="doccomment">/// &lt;p&gt;If the encryption status of your delivery stream is &lt;code&gt;ENABLING_FAILED&lt;/code&gt;, you</span>
+<span class="doccomment">/// can invoke this operation again with a valid CMK. The CMK must be enabled and the key</span>
+<span class="doccomment">/// policy mustn&#39;t explicitly deny the permission for Kinesis Data Firehose to invoke KMS</span>
+<span class="doccomment">/// encrypt and decrypt operations.&lt;/p&gt;</span>
+<span class="doccomment">/// &lt;p&gt;You can enable SSE for a delivery stream only if it&#39;s a delivery stream that uses</span>
+<span class="doccomment">/// &lt;code&gt;DirectPut&lt;/code&gt; as its source. &lt;/p&gt;</span>
+<span class="doccomment">/// &lt;p&gt;The &lt;code&gt;StartDeliveryStreamEncryption&lt;/code&gt; and</span>
+<span class="doccomment">/// &lt;code&gt;StopDeliveryStreamEncryption&lt;/code&gt; operations have a combined limit of 25 calls</span>
+<span class="doccomment">/// per delivery stream per 24 hours. For example, you reach the limit if you call</span>
+<span class="doccomment">/// &lt;code&gt;StartDeliveryStreamEncryption&lt;/code&gt; 13 times and</span>
+<span class="doccomment">/// &lt;code&gt;StopDeliveryStreamEncryption&lt;/code&gt; 12 times for the same delivery stream in a</span>
+<span class="doccomment">/// 24-hour period.&lt;/p&gt;</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">std::default::Default</span>, <span class="ident">std::clone::Clone</span>, <span class="ident">std::fmt::Debug</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">StartDeliveryStreamEncryption</span> {
+    <span class="ident">_private</span>: (),
+}
+<span class="kw">impl</span> <span class="ident">StartDeliveryStreamEncryption</span> {
+    <span class="doccomment">/// Creates a new builder-style object to manufacture [`StartDeliveryStreamEncryptionInput`](crate::input::StartDeliveryStreamEncryptionInput)</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">builder</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident"><span class="kw">crate</span>::input::start_delivery_stream_encryption_input::Builder</span> {
+        <span class="ident"><span class="kw">crate</span>::input::start_delivery_stream_encryption_input::Builder::default</span>()
+    }
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+        <span class="self">Self</span> { <span class="ident">_private</span>: () }
+    }
+}
+<span class="kw">impl</span> <span class="ident">smithy_http::response::ParseStrictResponse</span> <span class="kw">for</span> <span class="ident">StartDeliveryStreamEncryption</span> {
+    <span class="kw">type</span> <span class="ident">Output</span> <span class="op">=</span> <span class="ident">std::result::Result</span><span class="op">&lt;</span>
+        <span class="ident"><span class="kw">crate</span>::output::StartDeliveryStreamEncryptionOutput</span>,
+        <span class="ident"><span class="kw">crate</span>::error::StartDeliveryStreamEncryptionError</span>,
+    <span class="op">&gt;</span>;
+    <span class="kw">fn</span> <span class="ident">parse</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">response</span>: <span class="kw-2">&amp;</span><span class="ident">http::Response</span><span class="op">&lt;</span><span class="ident">bytes::Bytes</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident"><span class="self">Self</span>::Output</span> {
+        <span class="kw">if</span> <span class="op">!</span><span class="ident">response</span>.<span class="ident">status</span>().<span class="ident">is_success</span>() <span class="op">&amp;&amp;</span> <span class="ident">response</span>.<span class="ident">status</span>().<span class="ident">as_u16</span>() <span class="op">!</span><span class="op">=</span> <span class="number">200</span> {
+            <span class="ident"><span class="kw">crate</span>::operation_deser::parse_start_delivery_stream_encryption_error</span>(<span class="ident">response</span>)
+        } <span class="kw">else</span> {
+            <span class="ident"><span class="kw">crate</span>::operation_deser::parse_start_delivery_stream_encryption_response</span>(<span class="ident">response</span>)
+        }
+    }
+}
+
+<span class="doccomment">/// &lt;p&gt;Disables server-side encryption (SSE) for the delivery stream. &lt;/p&gt;</span>
+<span class="doccomment">/// &lt;p&gt;This operation is asynchronous. It returns immediately. When you invoke it, Kinesis Data</span>
+<span class="doccomment">/// Firehose first sets the encryption status of the stream to &lt;code&gt;DISABLING&lt;/code&gt;, and then</span>
+<span class="doccomment">/// to &lt;code&gt;DISABLED&lt;/code&gt;. You can continue to read and write data to your stream while its</span>
+<span class="doccomment">/// status is &lt;code&gt;DISABLING&lt;/code&gt;. It can take up to 5 seconds after the encryption status</span>
+<span class="doccomment">/// changes to &lt;code&gt;DISABLED&lt;/code&gt; before all records written to the delivery stream are no</span>
+<span class="doccomment">/// longer subject to encryption. To find out whether a record or a batch of records was</span>
+<span class="doccomment">/// encrypted, check the response elements &lt;a&gt;PutRecordOutput$Encrypted&lt;/a&gt; and</span>
+<span class="doccomment">/// &lt;a&gt;PutRecordBatchOutput$Encrypted&lt;/a&gt;, respectively.&lt;/p&gt;</span>
+<span class="doccomment">/// &lt;p&gt;To check the encryption state of a delivery stream, use &lt;a&gt;DescribeDeliveryStream&lt;/a&gt;. &lt;/p&gt;</span>
+<span class="doccomment">/// &lt;p&gt;If SSE is enabled using a customer managed CMK and then you invoke</span>
+<span class="doccomment">/// &lt;code&gt;StopDeliveryStreamEncryption&lt;/code&gt;, Kinesis Data Firehose schedules the related</span>
+<span class="doccomment">/// KMS grant for retirement and then retires it after it ensures that it is finished</span>
+<span class="doccomment">/// delivering records to the destination.&lt;/p&gt;</span>
+<span class="doccomment">/// &lt;p&gt;The &lt;code&gt;StartDeliveryStreamEncryption&lt;/code&gt; and</span>
+<span class="doccomment">/// &lt;code&gt;StopDeliveryStreamEncryption&lt;/code&gt; operations have a combined limit of 25 calls</span>
+<span class="doccomment">/// per delivery stream per 24 hours. For example, you reach the limit if you call</span>
+<span class="doccomment">/// &lt;code&gt;StartDeliveryStreamEncryption&lt;/code&gt; 13 times and</span>
+<span class="doccomment">/// &lt;code&gt;StopDeliveryStreamEncryption&lt;/code&gt; 12 times for the same delivery stream in a</span>
+<span class="doccomment">/// 24-hour period.&lt;/p&gt;</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">std::default::Default</span>, <span class="ident">std::clone::Clone</span>, <span class="ident">std::fmt::Debug</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">StopDeliveryStreamEncryption</span> {
+    <span class="ident">_private</span>: (),
+}
+<span class="kw">impl</span> <span class="ident">StopDeliveryStreamEncryption</span> {
+    <span class="doccomment">/// Creates a new builder-style object to manufacture [`StopDeliveryStreamEncryptionInput`](crate::input::StopDeliveryStreamEncryptionInput)</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">builder</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident"><span class="kw">crate</span>::input::stop_delivery_stream_encryption_input::Builder</span> {
+        <span class="ident"><span class="kw">crate</span>::input::stop_delivery_stream_encryption_input::Builder::default</span>()
+    }
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+        <span class="self">Self</span> { <span class="ident">_private</span>: () }
+    }
+}
+<span class="kw">impl</span> <span class="ident">smithy_http::response::ParseStrictResponse</span> <span class="kw">for</span> <span class="ident">StopDeliveryStreamEncryption</span> {
+    <span class="kw">type</span> <span class="ident">Output</span> <span class="op">=</span> <span class="ident">std::result::Result</span><span class="op">&lt;</span>
+        <span class="ident"><span class="kw">crate</span>::output::StopDeliveryStreamEncryptionOutput</span>,
+        <span class="ident"><span class="kw">crate</span>::error::StopDeliveryStreamEncryptionError</span>,
+    <span class="op">&gt;</span>;
+    <span class="kw">fn</span> <span class="ident">parse</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">response</span>: <span class="kw-2">&amp;</span><span class="ident">http::Response</span><span class="op">&lt;</span><span class="ident">bytes::Bytes</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident"><span class="self">Self</span>::Output</span> {
+        <span class="kw">if</span> <span class="op">!</span><span class="ident">response</span>.<span class="ident">status</span>().<span class="ident">is_success</span>() <span class="op">&amp;&amp;</span> <span class="ident">response</span>.<span class="ident">status</span>().<span class="ident">as_u16</span>() <span class="op">!</span><span class="op">=</span> <span class="number">200</span> {
+            <span class="ident"><span class="kw">crate</span>::operation_deser::parse_stop_delivery_stream_encryption_error</span>(<span class="ident">response</span>)
+        } <span class="kw">else</span> {
+            <span class="ident"><span class="kw">crate</span>::operation_deser::parse_stop_delivery_stream_encryption_response</span>(<span class="ident">response</span>)
+        }
+    }
+}
+
+<span class="doccomment">/// &lt;p&gt;Adds or updates tags for the specified delivery stream. A tag is a key-value pair</span>
+<span class="doccomment">/// that you can define and assign to AWS resources. If you specify a tag that already exists,</span>
+<span class="doccomment">/// the tag value is replaced with the value that you specify in the request. Tags are</span>
+<span class="doccomment">/// metadata. For example, you can add friendly names and descriptions or other types of</span>
+<span class="doccomment">/// information that can help you distinguish the delivery stream. For more information about</span>
+<span class="doccomment">/// tags, see &lt;a href=&quot;https://docs.aws.amazon.com/awsaccountbilling/latest/aboutv2/cost-alloc-tags.html&quot;&gt;Using Cost Allocation</span>
+<span class="doccomment">/// Tags&lt;/a&gt; in the &lt;i&gt;AWS Billing and Cost Management User Guide&lt;/i&gt;. &lt;/p&gt;</span>
+<span class="doccomment">/// &lt;p&gt;Each delivery stream can have up to 50 tags. &lt;/p&gt;</span>
+<span class="doccomment">/// &lt;p&gt;This operation has a limit of five transactions per second per account. &lt;/p&gt;</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">std::default::Default</span>, <span class="ident">std::clone::Clone</span>, <span class="ident">std::fmt::Debug</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">TagDeliveryStream</span> {
+    <span class="ident">_private</span>: (),
+}
+<span class="kw">impl</span> <span class="ident">TagDeliveryStream</span> {
+    <span class="doccomment">/// Creates a new builder-style object to manufacture [`TagDeliveryStreamInput`](crate::input::TagDeliveryStreamInput)</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">builder</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident"><span class="kw">crate</span>::input::tag_delivery_stream_input::Builder</span> {
+        <span class="ident"><span class="kw">crate</span>::input::tag_delivery_stream_input::Builder::default</span>()
+    }
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+        <span class="self">Self</span> { <span class="ident">_private</span>: () }
+    }
+}
+<span class="kw">impl</span> <span class="ident">smithy_http::response::ParseStrictResponse</span> <span class="kw">for</span> <span class="ident">TagDeliveryStream</span> {
+    <span class="kw">type</span> <span class="ident">Output</span> <span class="op">=</span> <span class="ident">std::result::Result</span><span class="op">&lt;</span>
+        <span class="ident"><span class="kw">crate</span>::output::TagDeliveryStreamOutput</span>,
+        <span class="ident"><span class="kw">crate</span>::error::TagDeliveryStreamError</span>,
+    <span class="op">&gt;</span>;
+    <span class="kw">fn</span> <span class="ident">parse</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">response</span>: <span class="kw-2">&amp;</span><span class="ident">http::Response</span><span class="op">&lt;</span><span class="ident">bytes::Bytes</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident"><span class="self">Self</span>::Output</span> {
+        <span class="kw">if</span> <span class="op">!</span><span class="ident">response</span>.<span class="ident">status</span>().<span class="ident">is_success</span>() <span class="op">&amp;&amp;</span> <span class="ident">response</span>.<span class="ident">status</span>().<span class="ident">as_u16</span>() <span class="op">!</span><span class="op">=</span> <span class="number">200</span> {
+            <span class="ident"><span class="kw">crate</span>::operation_deser::parse_tag_delivery_stream_error</span>(<span class="ident">response</span>)
+        } <span class="kw">else</span> {
+            <span class="ident"><span class="kw">crate</span>::operation_deser::parse_tag_delivery_stream_response</span>(<span class="ident">response</span>)
+        }
+    }
+}
+
+<span class="doccomment">/// &lt;p&gt;Removes tags from the specified delivery stream. Removed tags are deleted, and you</span>
+<span class="doccomment">/// can&#39;t recover them after this operation successfully completes.&lt;/p&gt;</span>
+<span class="doccomment">/// &lt;p&gt;If you specify a tag that doesn&#39;t exist, the operation ignores it.&lt;/p&gt;</span>
+<span class="doccomment">/// &lt;p&gt;This operation has a limit of five transactions per second per account. &lt;/p&gt;</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">std::default::Default</span>, <span class="ident">std::clone::Clone</span>, <span class="ident">std::fmt::Debug</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">UntagDeliveryStream</span> {
+    <span class="ident">_private</span>: (),
+}
+<span class="kw">impl</span> <span class="ident">UntagDeliveryStream</span> {
+    <span class="doccomment">/// Creates a new builder-style object to manufacture [`UntagDeliveryStreamInput`](crate::input::UntagDeliveryStreamInput)</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">builder</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident"><span class="kw">crate</span>::input::untag_delivery_stream_input::Builder</span> {
+        <span class="ident"><span class="kw">crate</span>::input::untag_delivery_stream_input::Builder::default</span>()
+    }
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+        <span class="self">Self</span> { <span class="ident">_private</span>: () }
+    }
+}
+<span class="kw">impl</span> <span class="ident">smithy_http::response::ParseStrictResponse</span> <span class="kw">for</span> <span class="ident">UntagDeliveryStream</span> {
+    <span class="kw">type</span> <span class="ident">Output</span> <span class="op">=</span> <span class="ident">std::result::Result</span><span class="op">&lt;</span>
+        <span class="ident"><span class="kw">crate</span>::output::UntagDeliveryStreamOutput</span>,
+        <span class="ident"><span class="kw">crate</span>::error::UntagDeliveryStreamError</span>,
+    <span class="op">&gt;</span>;
+    <span class="kw">fn</span> <span class="ident">parse</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">response</span>: <span class="kw-2">&amp;</span><span class="ident">http::Response</span><span class="op">&lt;</span><span class="ident">bytes::Bytes</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident"><span class="self">Self</span>::Output</span> {
+        <span class="kw">if</span> <span class="op">!</span><span class="ident">response</span>.<span class="ident">status</span>().<span class="ident">is_success</span>() <span class="op">&amp;&amp;</span> <span class="ident">response</span>.<span class="ident">status</span>().<span class="ident">as_u16</span>() <span class="op">!</span><span class="op">=</span> <span class="number">200</span> {
+            <span class="ident"><span class="kw">crate</span>::operation_deser::parse_untag_delivery_stream_error</span>(<span class="ident">response</span>)
+        } <span class="kw">else</span> {
+            <span class="ident"><span class="kw">crate</span>::operation_deser::parse_untag_delivery_stream_response</span>(<span class="ident">response</span>)
+        }
+    }
+}
+
+<span class="doccomment">/// &lt;p&gt;Updates the specified destination of the specified delivery stream.&lt;/p&gt;</span>
+<span class="doccomment">/// &lt;p&gt;Use this operation to change the destination type (for example, to replace the Amazon</span>
+<span class="doccomment">/// S3 destination with Amazon Redshift) or change the parameters associated with a destination</span>
+<span class="doccomment">/// (for example, to change the bucket name of the Amazon S3 destination). The update might not</span>
+<span class="doccomment">/// occur immediately. The target delivery stream remains active while the configurations are</span>
+<span class="doccomment">/// updated, so data writes to the delivery stream can continue during this process. The</span>
+<span class="doccomment">/// updated configurations are usually effective within a few minutes.&lt;/p&gt;</span>
+<span class="doccomment">/// &lt;p&gt;Switching between Amazon ES and other services is not supported. For an Amazon ES</span>
+<span class="doccomment">/// destination, you can only update to another Amazon ES destination.&lt;/p&gt;</span>
+<span class="doccomment">/// &lt;p&gt;If the destination type is the same, Kinesis Data Firehose merges the configuration</span>
+<span class="doccomment">/// parameters specified with the destination configuration that already exists on the delivery</span>
+<span class="doccomment">/// stream. If any of the parameters are not specified in the call, the existing values are</span>
+<span class="doccomment">/// retained. For example, in the Amazon S3 destination, if &lt;a&gt;EncryptionConfiguration&lt;/a&gt; is not specified, then the existing</span>
+<span class="doccomment">/// &lt;code&gt;EncryptionConfiguration&lt;/code&gt; is maintained on the destination.&lt;/p&gt;</span>
+<span class="doccomment">/// &lt;p&gt;If the destination type is not the same, for example, changing the destination from</span>
+<span class="doccomment">/// Amazon S3 to Amazon Redshift, Kinesis Data Firehose does not merge any parameters. In this</span>
+<span class="doccomment">/// case, all parameters must be specified.&lt;/p&gt;</span>
+<span class="doccomment">/// &lt;p&gt;Kinesis Data Firehose uses &lt;code&gt;CurrentDeliveryStreamVersionId&lt;/code&gt; to avoid race</span>
+<span class="doccomment">/// conditions and conflicting merges. This is a required field, and the service updates the</span>
+<span class="doccomment">/// configuration only if the existing configuration has a version ID that matches. After the</span>
+<span class="doccomment">/// update is applied successfully, the version ID is updated, and can be retrieved using &lt;a&gt;DescribeDeliveryStream&lt;/a&gt;. Use the new version ID to set</span>
+<span class="doccomment">/// &lt;code&gt;CurrentDeliveryStreamVersionId&lt;/code&gt; in the next call.&lt;/p&gt;</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">std::default::Default</span>, <span class="ident">std::clone::Clone</span>, <span class="ident">std::fmt::Debug</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">UpdateDestination</span> {
+    <span class="ident">_private</span>: (),
+}
+<span class="kw">impl</span> <span class="ident">UpdateDestination</span> {
+    <span class="doccomment">/// Creates a new builder-style object to manufacture [`UpdateDestinationInput`](crate::input::UpdateDestinationInput)</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">builder</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident"><span class="kw">crate</span>::input::update_destination_input::Builder</span> {
+        <span class="ident"><span class="kw">crate</span>::input::update_destination_input::Builder::default</span>()
+    }
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+        <span class="self">Self</span> { <span class="ident">_private</span>: () }
+    }
+}
+<span class="kw">impl</span> <span class="ident">smithy_http::response::ParseStrictResponse</span> <span class="kw">for</span> <span class="ident">UpdateDestination</span> {
+    <span class="kw">type</span> <span class="ident">Output</span> <span class="op">=</span> <span class="ident">std::result::Result</span><span class="op">&lt;</span>
+        <span class="ident"><span class="kw">crate</span>::output::UpdateDestinationOutput</span>,
+        <span class="ident"><span class="kw">crate</span>::error::UpdateDestinationError</span>,
+    <span class="op">&gt;</span>;
+    <span class="kw">fn</span> <span class="ident">parse</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">response</span>: <span class="kw-2">&amp;</span><span class="ident">http::Response</span><span class="op">&lt;</span><span class="ident">bytes::Bytes</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident"><span class="self">Self</span>::Output</span> {
+        <span class="kw">if</span> <span class="op">!</span><span class="ident">response</span>.<span class="ident">status</span>().<span class="ident">is_success</span>() <span class="op">&amp;&amp;</span> <span class="ident">response</span>.<span class="ident">status</span>().<span class="ident">as_u16</span>() <span class="op">!</span><span class="op">=</span> <span class="number">200</span> {
+            <span class="ident"><span class="kw">crate</span>::operation_deser::parse_update_destination_error</span>(<span class="ident">response</span>)
+        } <span class="kw">else</span> {
+            <span class="ident"><span class="kw">crate</span>::operation_deser::parse_update_destination_response</span>(<span class="ident">response</span>)
+        }
+    }
+}
+</code></pre></div>
+</section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../" data-current-crate="aws_sdk_firehose" data-search-index-js="../../search-index.js" data-search-js="../../search.js"></div>
+    <script src="../../main.js"></script><script src="../../source-script.js"></script><script src="../../source-files.js"></script>
+</body></html>

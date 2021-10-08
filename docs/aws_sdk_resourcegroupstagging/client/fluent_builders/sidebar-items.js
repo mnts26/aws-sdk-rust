@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["DescribeReportCreation",""],["GetComplianceSummary",""],["GetResources",""],["GetTagKeys",""],["GetTagValues",""],["StartReportCreation",""],["TagResources",""],["UntagResources",""]]});

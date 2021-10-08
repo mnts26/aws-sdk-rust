@@ -1,0 +1,1 @@
+initSidebarItems({"fn":[["main","Deletes an object in an Amazon S3 bucket."]],"struct":[["Opt",""]]});

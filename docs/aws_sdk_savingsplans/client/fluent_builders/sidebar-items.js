@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["CreateSavingsPlan",""],["DeleteQueuedSavingsPlan",""],["DescribeSavingsPlanRates",""],["DescribeSavingsPlans",""],["DescribeSavingsPlansOfferingRates",""],["DescribeSavingsPlansOfferings",""],["ListTagsForResource",""],["TagResource",""],["UntagResource",""]]});

@@ -1,0 +1,1 @@
+initSidebarItems({"mod":[["account_info","See `AccountInfo`"],["role_credentials","See `RoleCredentials`"],["role_info","See `RoleInfo`"]],"struct":[["AccountInfo",""],["RoleCredentials",""],["RoleInfo",""]]});

@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["DeleteObject",""],["DescribeObject",""],["GetObject",""],["ListItems",""],["PutObject",""]]});

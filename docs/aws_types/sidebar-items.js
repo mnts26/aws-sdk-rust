@@ -1,0 +1,1 @@
+initSidebarItems({"mod":[["build_metadata",""],["config","AWS Shared Config"],["credentials","AWS SDK Credentials"],["region",""]],"struct":[["Credentials","AWS SDK Credentials"],["SigningService","The name of the service used to sign this request"]]});

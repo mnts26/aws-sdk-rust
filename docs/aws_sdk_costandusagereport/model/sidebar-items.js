@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["AdditionalArtifact",""],["AwsRegion",""],["CompressionFormat",""],["ReportFormat",""],["ReportVersioning",""],["SchemaElement",""],["TimeUnit",""]],"mod":[["report_definition","See `ReportDefinition`"]],"struct":[["ReportDefinition",""]]});

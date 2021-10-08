@@ -1,0 +1,1 @@
+initSidebarItems({"mod":[["describe_services_output","See `DescribeServicesOutput`"],["get_attribute_values_output","See `GetAttributeValuesOutput`"],["get_products_output","See `GetProductsOutput`"]],"struct":[["DescribeServicesOutput",""],["GetAttributeValuesOutput",""],["GetProductsOutput",""]]});

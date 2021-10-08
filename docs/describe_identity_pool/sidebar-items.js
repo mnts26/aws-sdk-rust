@@ -1,0 +1,1 @@
+initSidebarItems({"fn":[["main","Displays some information about an Amazon Cognito identitiy pool."]],"struct":[["Opt",""]]});

@@ -1,0 +1,100 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="AWS OpsWorks CM"><meta name="keywords" content="rust, rustlang, rust-lang, aws_sdk_opsworkscm"><title>aws_sdk_opsworkscm - Rust</title><link rel="stylesheet" type="text/css" href="../normalize.css"><link rel="stylesheet" type="text/css" href="../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../ayu.css" disabled ><script id="default-settings" ></script><script src="../storage.js"></script><script src="../crates.js"></script><noscript><link rel="stylesheet" href="../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../favicon.svg"><style type="text/css">#crate-search{background-image:url("../down-arrow.svg");}</style></head><body class="rustdoc mod crate"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../aws_sdk_opsworkscm/index.html'><div class='logo-container rust-logo'><img src='../rust-logo.png' alt='logo'></div></a><h2 class="location">Crate aws_sdk_opsworkscm</h2><div class="block version"><div class="narrow-helper"></div><p>Version 0.0.19-alpha</p></div><div class="sidebar-elems"><a id="all-types" href="all.html"><p>See all aws_sdk_opsworkscm's items</p></a><div class="block items"><ul><li><a href="#modules">Modules</a></li><li><a href="#structs">Structs</a></li><li><a href="#enums">Enums</a></li><li><a href="#statics">Statics</a></li></ul></div><div id="sidebar-vars" data-name="aws_sdk_opsworkscm" data-ty="mod" data-relpath=""></div><script defer src="sidebar-items.js"></script></div></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="18" height="18" alt="Pick another theme!" src="../brush.svg"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../settings.html" title="settings"><img width="18" height="18" alt="Change settings" src="../wheel.svg"></a></div></form></nav><section id="main" class="content"><h1 class="fqn"><span class="in-band">Crate <a class="mod" href="#">aws_sdk_opsworkscm</a><button id="copy-path" onclick="copy_path(this)" title="Copy item path to clipboard"><img src="../clipboard.svg" width="19" height="18" alt="Copy item path"></button></span><span class="out-of-band"><span id="render-detail"><a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">[<span class="inner">&#x2212;</span>]</a></span><a class="srclink" href="../src/aws_sdk_opsworkscm/lib.rs.html#1-128" title="goto source code">[src]</a></span></h1><details class="rustdoc-toggle top-doc" open><summary class="hideme"><span>Expand description</span></summary><div class="docblock"><p><fullname>AWS OpsWorks CM</fullname></p>
+<p>AWS OpsWorks for configuration management (CM) is a service that runs and manages
+configuration management servers. You can use AWS OpsWorks CM to create and manage AWS
+OpsWorks for Chef Automate and AWS OpsWorks for Puppet Enterprise servers, and add or remove
+nodes for the servers to manage.</p>
+<p>
+<b>Glossary of terms</b>
+</p>
+<ul>
+<li>
+<p>
+<b>Server</b>: A configuration management server that can be
+highly-available. The configuration management server runs on
+an Amazon Elastic Compute Cloud (EC2) instance, and may use various other AWS services, such as Amazon Relational
+Database Service (RDS) and Elastic Load Balancing. A server is a generic abstraction over the configuration
+manager that you want to use, much like Amazon RDS. In AWS OpsWorks CM, you do not start
+or stop servers. After you create servers, they continue to run until they are deleted.</p>
+</li>
+<li>
+<p>
+<b>Engine</b>: The engine is the specific configuration manager
+that you want to use. Valid values in this release include <code>ChefAutomate</code> and <code>Puppet</code>.</p>
+</li>
+<li>
+<p>
+<b>Backup</b>: This
+is an application-level backup of the data that the configuration manager
+stores. AWS OpsWorks CM
+creates an S3 bucket for backups when you launch the first
+server. A backup maintains a snapshot of a server's configuration-related
+attributes at the time the backup starts.</p>
+</li>
+<li>
+<p>
+<b>Events</b>:
+Events are always related to a server. Events are written
+during server creation, when health checks run, when backups
+are created, when system maintenance is performed, etc. When you delete a server, the server's events are
+also deleted.</p>
+</li>
+<li>
+<p>
+<b>Account attributes</b>:
+Every account has attributes that are assigned in the AWS OpsWorks CM
+database. These attributes store information about configuration limits (servers,
+backups, etc.) and your customer account.
+</p>
+</li>
+</ul>
+<p>
+<b>Endpoints</b>
+</p>
+<p>AWS OpsWorks CM supports the following endpoints, all HTTPS. You must connect to one of the following endpoints. Your servers
+can only be accessed or managed within the endpoint in which they are created.</p>
+<ul>
+<li>
+<p>opsworks-cm.us-east-1.amazonaws.com</p>
+</li>
+<li>
+<p>opsworks-cm.us-east-2.amazonaws.com</p>
+</li>
+<li>
+<p>opsworks-cm.us-west-1.amazonaws.com</p>
+</li>
+<li>
+<p>opsworks-cm.us-west-2.amazonaws.com</p>
+</li>
+<li>
+<p>opsworks-cm.ap-northeast-1.amazonaws.com</p>
+</li>
+<li>
+<p>opsworks-cm.ap-southeast-1.amazonaws.com</p>
+</li>
+<li>
+<p>opsworks-cm.ap-southeast-2.amazonaws.com</p>
+</li>
+<li>
+<p>opsworks-cm.eu-central-1.amazonaws.com</p>
+</li>
+<li>
+<p>opsworks-cm.eu-west-1.amazonaws.com</p>
+</li>
+</ul>
+<p>For more information, see <a href="https://docs.aws.amazon.com/general/latest/gr/opsworks-service.html">AWS OpsWorks endpoints and quotas</a> in the AWS General Reference.</p>
+<p>
+<b>Throttling limits</b>
+</p>
+<p>All API operations allow for five requests per second with a burst of 10 requests per second.</p></div></details><h2 id="reexports" class="section-header"><a href="#reexports">Re-exports</a></h2>
+<div class="item-table"><div class="item-row"><div class="item-left import-item"><code>pub use config::<a class="struct" href="config/struct.Config.html" title="struct aws_sdk_opsworkscm::config::Config">Config</a>;</code></div><div class="item-right docblock-short"></div></div><div class="item-row"><div class="item-left import-item"><code>pub use client::<a class="struct" href="client/struct.Client.html" title="struct aws_sdk_opsworkscm::client::Client">Client</a>;</code></div><div class="item-right docblock-short"></div></div></div><h2 id="modules" class="section-header"><a href="#modules">Modules</a></h2>
+<div class="item-table"><div class="item-row"><div class="item-left module-item"><a class="mod" href="client/index.html" title="aws_sdk_opsworkscm::client mod">client</a></div><div class="item-right docblock-short"></div></div><div class="item-row"><div class="item-left module-item"><a class="mod" href="config/index.html" title="aws_sdk_opsworkscm::config mod">config</a></div><div class="item-right docblock-short"></div></div><div class="item-row"><div class="item-left module-item"><a class="mod" href="error/index.html" title="aws_sdk_opsworkscm::error mod">error</a></div><div class="item-right docblock-short"></div></div><div class="item-row"><div class="item-left module-item"><a class="mod" href="input/index.html" title="aws_sdk_opsworkscm::input mod">input</a></div><div class="item-right docblock-short"></div></div><div class="item-row"><div class="item-left module-item"><a class="mod" href="model/index.html" title="aws_sdk_opsworkscm::model mod">model</a></div><div class="item-right docblock-short"></div></div><div class="item-row"><div class="item-left module-item"><a class="mod" href="operation/index.html" title="aws_sdk_opsworkscm::operation mod">operation</a></div><div class="item-right docblock-short"></div></div><div class="item-row"><div class="item-left module-item"><a class="mod" href="output/index.html" title="aws_sdk_opsworkscm::output mod">output</a></div><div class="item-right docblock-short"></div></div></div><h2 id="structs" class="section-header"><a href="#structs">Structs</a></h2>
+<div class="item-table"><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.Blob.html" title="aws_sdk_opsworkscm::Blob struct">Blob</a></div><div class="item-right docblock-short"></div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.ByteStream.html" title="aws_sdk_opsworkscm::ByteStream struct">ByteStream</a></div><div class="item-right docblock-short"><p>Stream of binary data</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.Credentials.html" title="aws_sdk_opsworkscm::Credentials struct">Credentials</a></div><div class="item-right docblock-short"><p>AWS SDK Credentials</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.Endpoint.html" title="aws_sdk_opsworkscm::Endpoint struct">Endpoint</a></div><div class="item-right docblock-short"><p>API Endpoint</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.Region.html" title="aws_sdk_opsworkscm::Region struct">Region</a></div><div class="item-right docblock-short"><p>The region to send requests to.</p>
+</div></div></div><h2 id="enums" class="section-header"><a href="#enums">Enums</a></h2>
+<div class="item-table"><div class="item-row"><div class="item-left module-item"><a class="enum" href="enum.Error.html" title="aws_sdk_opsworkscm::Error enum">Error</a></div><div class="item-right docblock-short"></div></div><div class="item-row"><div class="item-left module-item"><a class="enum" href="enum.SdkError.html" title="aws_sdk_opsworkscm::SdkError enum">SdkError</a></div><div class="item-right docblock-short"><p>Failed SDK Result</p>
+</div></div></div><h2 id="statics" class="section-header"><a href="#statics">Statics</a></h2>
+<div class="item-table"><div class="item-row"><div class="item-left module-item"><a class="static" href="static.PKG_VERSION.html" title="aws_sdk_opsworkscm::PKG_VERSION static">PKG_VERSION</a></div><div class="item-right docblock-short"></div></div></div></section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../" data-current-crate="aws_sdk_opsworkscm" data-search-index-js="../search-index.js" data-search-js="../search.js"></div>
+    <script src="../main.js"></script>
+</body></html>

@@ -1,0 +1,1 @@
+initSidebarItems({"mod":[["invoke_endpoint_async_output","See `InvokeEndpointAsyncOutput`"],["invoke_endpoint_output","See `InvokeEndpointOutput`"]],"struct":[["InvokeEndpointAsyncOutput",""],["InvokeEndpointOutput",""]]});

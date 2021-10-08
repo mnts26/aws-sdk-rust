@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["DescribeStream",""],["GetRecords",""],["GetShardIterator",""],["ListStreams",""]]});

@@ -1,0 +1,1 @@
+initSidebarItems({"fn":[["main","Deletes an Amazon Kinesis data stream."]],"struct":[["Opt",""]]});

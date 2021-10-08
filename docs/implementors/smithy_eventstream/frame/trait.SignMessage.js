@@ -1,0 +1,3 @@
+(function() {var implementors = {};
+implementors["aws_sig_auth"] = [{"text":"impl <a class=\"trait\" href=\"smithy_eventstream/frame/trait.SignMessage.html\" title=\"trait smithy_eventstream::frame::SignMessage\">SignMessage</a> for <a class=\"struct\" href=\"aws_sig_auth/event_stream/struct.SigV4Signer.html\" title=\"struct aws_sig_auth::event_stream::SigV4Signer\">SigV4Signer</a>","synthetic":false,"types":["aws_sig_auth::event_stream::SigV4Signer"]}];
+if (window.register_implementors) {window.register_implementors(implementors);} else {window.pending_implementors = implementors;}})()

@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["GenerateDataSetErrorKind",""],["StartSupportDataExportErrorKind",""]],"mod":[["marketplace_commerce_analytics_exception","See `MarketplaceCommerceAnalyticsException`"]],"struct":[["GenerateDataSetError",""],["MarketplaceCommerceAnalyticsException","This exception is thrown when an internal service error occurs."],["StartSupportDataExportError",""]]});

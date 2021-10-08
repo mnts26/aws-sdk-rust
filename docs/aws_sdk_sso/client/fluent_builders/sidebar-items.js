@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["GetRoleCredentials",""],["ListAccountRoles",""],["ListAccounts",""],["Logout",""]]});

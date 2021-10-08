@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["EnvironmentVariableRegionProvider","Load a region from environment variables"]]});

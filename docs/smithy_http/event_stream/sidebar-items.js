@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["EventStreamInput","Input type for Event Streams."],["MessageStreamAdapter","Adapts a `Stream<SmithyMessageType>` to a signed `Stream<Bytes>` by using the provided message marshaller and signer implementations."],["Receiver","Receives Smithy-modeled messages out of an Event Stream."]],"type":[["BoxError",""]]});

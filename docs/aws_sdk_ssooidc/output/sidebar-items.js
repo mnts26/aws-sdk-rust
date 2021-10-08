@@ -1,0 +1,1 @@
+initSidebarItems({"mod":[["create_token_output","See `CreateTokenOutput`"],["register_client_output","See `RegisterClientOutput`"],["start_device_authorization_output","See `StartDeviceAuthorizationOutput`"]],"struct":[["CreateTokenOutput",""],["RegisterClientOutput",""],["StartDeviceAuthorizationOutput",""]]});

@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["ClaimDevicesByClaimCode",""],["DescribeDevice",""],["FinalizeDeviceClaim",""],["GetDeviceMethods",""],["InitiateDeviceClaim",""],["InvokeDeviceMethod",""],["ListDeviceEvents",""],["ListDevices",""],["ListTagsForResource",""],["TagResource",""],["UnclaimDevice",""],["UntagResource",""],["UpdateDeviceState",""]]});

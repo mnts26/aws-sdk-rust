@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["Platform",""],["ProjectState",""]],"mod":[["bundle_details","See `BundleDetails`"],["project_details","See `ProjectDetails`"],["project_summary","See `ProjectSummary`"],["resource","See `Resource`"]],"struct":[["BundleDetails",""],["ProjectDetails",""],["ProjectSummary",""],["Resource",""]]});

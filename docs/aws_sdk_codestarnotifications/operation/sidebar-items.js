@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["CreateNotificationRule",""],["DeleteNotificationRule",""],["DeleteTarget",""],["DescribeNotificationRule",""],["ListEventTypes",""],["ListNotificationRules",""],["ListTagsForResource",""],["ListTargets",""],["Subscribe",""],["TagResource",""],["Unsubscribe",""],["UntagResource",""],["UpdateNotificationRule",""]]});

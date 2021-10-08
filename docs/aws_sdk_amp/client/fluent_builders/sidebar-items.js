@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["CreateWorkspace",""],["DeleteWorkspace",""],["DescribeWorkspace",""],["ListTagsForResource",""],["ListWorkspaces",""],["TagResource",""],["UntagResource",""],["UpdateWorkspaceAlias",""]]});

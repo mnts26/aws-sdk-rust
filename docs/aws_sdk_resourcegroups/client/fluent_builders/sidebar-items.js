@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["CreateGroup",""],["DeleteGroup",""],["GetGroup",""],["GetGroupConfiguration",""],["GetGroupQuery",""],["GetTags",""],["GroupResources",""],["ListGroupResources",""],["ListGroups",""],["PutGroupConfiguration",""],["SearchResources",""],["Tag",""],["UngroupResources",""],["Untag",""],["UpdateGroup",""],["UpdateGroupQuery",""]]});

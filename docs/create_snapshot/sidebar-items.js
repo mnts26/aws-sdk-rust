@@ -1,0 +1,1 @@
+initSidebarItems({"constant":[["EBS_BLOCK_SIZE","Amazon EBS only supports one fixed size of block"]],"fn":[["main","Creates an Amazon Elastic Block Store snapshot with the specified description."]],"struct":[["Opt",""]]});

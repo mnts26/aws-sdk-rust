@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["CancelTask",""],["CreateTask",""],["DescribeDevice",""],["DescribeDeviceEc2Instances",""],["DescribeExecution",""],["DescribeTask",""],["ListDeviceResources",""],["ListDevices",""],["ListExecutions",""],["ListTagsForResource",""],["ListTasks",""],["TagResource",""],["UntagResource",""]]});

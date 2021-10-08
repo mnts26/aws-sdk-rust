@@ -1,0 +1,1 @@
+initSidebarItems({"fn":[["main","Lists the name and status of your AWS CloudFormation stacks in the Region."]],"struct":[["Opt",""]]});

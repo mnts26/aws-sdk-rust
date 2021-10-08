@@ -1,0 +1,1 @@
+initSidebarItems({"fn":[["main","Creates an Amazon Kinesis data stream."]],"struct":[["Opt",""]]});

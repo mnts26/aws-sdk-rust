@@ -1,0 +1,1 @@
+initSidebarItems({"fn":[["main","Creates an Amazon S3 bucket in the Region."]],"struct":[["Opt",""]]});

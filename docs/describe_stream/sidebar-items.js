@@ -1,0 +1,1 @@
+initSidebarItems({"fn":[["main","Lists your Amazon Kinesis data streams in the Region."]],"struct":[["Opt",""]]});

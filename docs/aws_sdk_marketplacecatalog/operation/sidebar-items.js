@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["CancelChangeSet",""],["DescribeChangeSet",""],["DescribeEntity",""],["ListChangeSets",""],["ListEntities",""],["StartChangeSet",""]]});

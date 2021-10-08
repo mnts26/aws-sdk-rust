@@ -1,0 +1,48 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content=""><meta name="keywords" content="rust, rustlang, rust-lang, aws_sdk_workmail"><title>aws_sdk_workmail - Rust</title><link rel="stylesheet" type="text/css" href="../normalize.css"><link rel="stylesheet" type="text/css" href="../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../ayu.css" disabled ><script id="default-settings" ></script><script src="../storage.js"></script><script src="../crates.js"></script><noscript><link rel="stylesheet" href="../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../favicon.svg"><style type="text/css">#crate-search{background-image:url("../down-arrow.svg");}</style></head><body class="rustdoc mod crate"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../aws_sdk_workmail/index.html'><div class='logo-container rust-logo'><img src='../rust-logo.png' alt='logo'></div></a><h2 class="location">Crate aws_sdk_workmail</h2><div class="block version"><div class="narrow-helper"></div><p>Version 0.0.19-alpha</p></div><div class="sidebar-elems"><a id="all-types" href="all.html"><p>See all aws_sdk_workmail's items</p></a><div class="block items"><ul><li><a href="#modules">Modules</a></li><li><a href="#structs">Structs</a></li><li><a href="#enums">Enums</a></li><li><a href="#statics">Statics</a></li></ul></div><div id="sidebar-vars" data-name="aws_sdk_workmail" data-ty="mod" data-relpath=""></div><script defer src="sidebar-items.js"></script></div></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="18" height="18" alt="Pick another theme!" src="../brush.svg"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../settings.html" title="settings"><img width="18" height="18" alt="Change settings" src="../wheel.svg"></a></div></form></nav><section id="main" class="content"><h1 class="fqn"><span class="in-band">Crate <a class="mod" href="#">aws_sdk_workmail</a><button id="copy-path" onclick="copy_path(this)" title="Copy item path to clipboard"><img src="../clipboard.svg" width="19" height="18" alt="Copy item path"></button></span><span class="out-of-band"><span id="render-detail"><a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">[<span class="inner">&#x2212;</span>]</a></span><a class="srclink" href="../src/aws_sdk_workmail/lib.rs.html#1-77" title="goto source code">[src]</a></span></h1><details class="rustdoc-toggle top-doc" open><summary class="hideme"><span>Expand description</span></summary><div class="docblock"><p>Amazon WorkMail is a secure, managed business email and calendaring service with support for
+existing desktop and mobile email clients. You can access your email, contacts, and
+calendars using Microsoft Outlook, your browser, or other native iOS and Android email
+applications. You can integrate WorkMail with your existing corporate directory and control
+both the keys that encrypt your data and the location in which your data is
+stored.</p>
+<p>The WorkMail API is designed for the following scenarios:</p>
+<ul>
+<li>
+<p>Listing and describing organizations</p>
+</li>
+</ul>
+<ul>
+<li>
+<p>Managing users</p>
+</li>
+</ul>
+<ul>
+<li>
+<p>Managing groups</p>
+</li>
+</ul>
+<ul>
+<li>
+<p>Managing resources</p>
+</li>
+</ul>
+<p>All WorkMail API operations are Amazon-authenticated and certificate-signed. They not
+only require the use of the AWS SDK, but also allow for the exclusive use of AWS Identity and Access Management
+users and roles to help facilitate access, trust, and permission policies. By creating a
+role and allowing an IAM user to access the WorkMail site, the IAM user gains full
+administrative visibility into the entire WorkMail organization (or as set in the IAM
+policy). This includes, but is not limited to, the ability to create, update, and delete
+users, groups, and resources. This allows developers to perform the scenarios listed above,
+as well as give users the ability to grant access on a selective basis using the IAM
+model.</p></div></details><h2 id="reexports" class="section-header"><a href="#reexports">Re-exports</a></h2>
+<div class="item-table"><div class="item-row"><div class="item-left import-item"><code>pub use config::<a class="struct" href="config/struct.Config.html" title="struct aws_sdk_workmail::config::Config">Config</a>;</code></div><div class="item-right docblock-short"></div></div><div class="item-row"><div class="item-left import-item"><code>pub use client::<a class="struct" href="client/struct.Client.html" title="struct aws_sdk_workmail::client::Client">Client</a>;</code></div><div class="item-right docblock-short"></div></div></div><h2 id="modules" class="section-header"><a href="#modules">Modules</a></h2>
+<div class="item-table"><div class="item-row"><div class="item-left module-item"><a class="mod" href="client/index.html" title="aws_sdk_workmail::client mod">client</a></div><div class="item-right docblock-short"></div></div><div class="item-row"><div class="item-left module-item"><a class="mod" href="config/index.html" title="aws_sdk_workmail::config mod">config</a></div><div class="item-right docblock-short"></div></div><div class="item-row"><div class="item-left module-item"><a class="mod" href="error/index.html" title="aws_sdk_workmail::error mod">error</a></div><div class="item-right docblock-short"></div></div><div class="item-row"><div class="item-left module-item"><a class="mod" href="input/index.html" title="aws_sdk_workmail::input mod">input</a></div><div class="item-right docblock-short"></div></div><div class="item-row"><div class="item-left module-item"><a class="mod" href="model/index.html" title="aws_sdk_workmail::model mod">model</a></div><div class="item-right docblock-short"></div></div><div class="item-row"><div class="item-left module-item"><a class="mod" href="operation/index.html" title="aws_sdk_workmail::operation mod">operation</a></div><div class="item-right docblock-short"></div></div><div class="item-row"><div class="item-left module-item"><a class="mod" href="output/index.html" title="aws_sdk_workmail::output mod">output</a></div><div class="item-right docblock-short"></div></div></div><h2 id="structs" class="section-header"><a href="#structs">Structs</a></h2>
+<div class="item-table"><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.Blob.html" title="aws_sdk_workmail::Blob struct">Blob</a></div><div class="item-right docblock-short"></div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.ByteStream.html" title="aws_sdk_workmail::ByteStream struct">ByteStream</a></div><div class="item-right docblock-short"><p>Stream of binary data</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.Credentials.html" title="aws_sdk_workmail::Credentials struct">Credentials</a></div><div class="item-right docblock-short"><p>AWS SDK Credentials</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.Endpoint.html" title="aws_sdk_workmail::Endpoint struct">Endpoint</a></div><div class="item-right docblock-short"><p>API Endpoint</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.Region.html" title="aws_sdk_workmail::Region struct">Region</a></div><div class="item-right docblock-short"><p>The region to send requests to.</p>
+</div></div></div><h2 id="enums" class="section-header"><a href="#enums">Enums</a></h2>
+<div class="item-table"><div class="item-row"><div class="item-left module-item"><a class="enum" href="enum.Error.html" title="aws_sdk_workmail::Error enum">Error</a></div><div class="item-right docblock-short"></div></div><div class="item-row"><div class="item-left module-item"><a class="enum" href="enum.SdkError.html" title="aws_sdk_workmail::SdkError enum">SdkError</a></div><div class="item-right docblock-short"><p>Failed SDK Result</p>
+</div></div></div><h2 id="statics" class="section-header"><a href="#statics">Statics</a></h2>
+<div class="item-table"><div class="item-row"><div class="item-left module-item"><a class="static" href="static.PKG_VERSION.html" title="aws_sdk_workmail::PKG_VERSION static">PKG_VERSION</a></div><div class="item-right docblock-short"></div></div></div></section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../" data-current-crate="aws_sdk_workmail" data-search-index-js="../search-index.js" data-search-js="../search.js"></div>
+    <script src="../main.js"></script>
+</body></html>

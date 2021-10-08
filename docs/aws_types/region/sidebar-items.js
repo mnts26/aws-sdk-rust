@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["Region","The region to send requests to."],["SigningRegion","The region to use when signing requests"]]});

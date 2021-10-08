@@ -1,0 +1,1 @@
+initSidebarItems({"fn":[["main","Lists the items in a DynamoDB table."]],"struct":[["Opt",""]]});

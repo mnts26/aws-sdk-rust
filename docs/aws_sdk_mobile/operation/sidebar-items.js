@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["CreateProject",""],["DeleteProject",""],["DescribeBundle",""],["DescribeProject",""],["ExportBundle",""],["ExportProject",""],["ListBundles",""],["ListProjects",""],["UpdateProject",""]]});

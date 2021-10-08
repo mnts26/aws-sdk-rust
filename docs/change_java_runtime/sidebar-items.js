@@ -1,0 +1,1 @@
+initSidebarItems({"fn":[["main","Sets a Lambda function’s Java runtime to Corretto."]],"struct":[["Opt",""]]});

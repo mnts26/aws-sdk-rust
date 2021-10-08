@@ -1,0 +1,1 @@
+initSidebarItems({"fn":[["main","Retrieves the state of an Amazon Elastic Block Store snapshot using Amazon EC2 API. It must be `completed` before you can use the snapshot."]],"struct":[["Opt",""]]});

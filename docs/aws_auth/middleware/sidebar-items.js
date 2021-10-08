@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["CredentialsStageError",""]],"struct":[["CredentialsStage","Middleware stage that loads credentials from a CredentialsProvider and places them in the property bag of the request."]]});

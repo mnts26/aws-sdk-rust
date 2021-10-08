@@ -1,0 +1,1 @@
+initSidebarItems({"mod":[["fluent_builders",""]],"struct":[["Builder","A builder that provides more customization options when constructing a [`Client`]."],["Client","An ergonomic service client for `Firehose_20150804`."]]});

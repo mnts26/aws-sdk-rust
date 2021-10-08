@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["CreateEnvironment",""],["DeleteEnvironment",""],["GetEnvironment",""],["ListEnvironments",""],["ListTagsForResource",""],["TagResource",""],["UntagResource",""],["UpdateEnvironment",""]]});

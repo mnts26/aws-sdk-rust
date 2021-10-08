@@ -1,0 +1,1 @@
+initSidebarItems({"fn":[["main","Adds an item to an Amazon DynamoDB table. The table schema must use one of username, p_type, age, first, or last as the primary key."]],"struct":[["Opt",""]]});

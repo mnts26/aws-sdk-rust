@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["BatchExecuteStatement",""],["CancelStatement",""],["DescribeStatement",""],["DescribeTable",""],["ExecuteStatement",""],["GetStatementResult",""],["ListDatabases",""],["ListSchemas",""],["ListStatements",""],["ListTables",""]]});

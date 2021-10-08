@@ -1,0 +1,1 @@
+initSidebarItems({"mod":[["get_personalized_ranking_output","See `GetPersonalizedRankingOutput`"],["get_recommendations_output","See `GetRecommendationsOutput`"]],"struct":[["GetPersonalizedRankingOutput",""],["GetRecommendationsOutput",""]]});

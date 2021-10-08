@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["CreateApplication",""],["DeleteApplication",""],["DescribeApplication",""],["ListApplications",""],["ListTagsForResource",""],["TagResource",""],["UntagResource",""],["UpdateApplication",""]]});

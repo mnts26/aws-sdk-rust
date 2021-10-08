@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["EnvironmentStatus",""],["FederationMode",""]],"mod":[["environment","See `Environment`"],["federation_parameters","See `FederationParameters`"]],"struct":[["Environment",""],["FederationParameters",""]]});

@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["ProviderConfig","Configuration options for Credential Providers"]]});

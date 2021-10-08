@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["CancelQuantumTask",""],["CreateQuantumTask",""],["GetDevice",""],["GetQuantumTask",""],["ListTagsForResource",""],["SearchDevices",""],["SearchQuantumTasks",""],["TagResource",""],["UntagResource",""]]});

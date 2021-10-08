@@ -1,0 +1,1 @@
+initSidebarItems({"mod":[["data_point","See `DataPoint`"],["forecast","See `Forecast`"]],"struct":[["DataPoint",""],["Forecast",""]]});

@@ -1,0 +1,1 @@
+initSidebarItems({"fn":[["main","Creates a new contact list."]],"struct":[["Opt",""]]});

@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["CreateSuiteDefinition",""],["DeleteSuiteDefinition",""],["GetSuiteDefinition",""],["GetSuiteRun",""],["GetSuiteRunReport",""],["ListSuiteDefinitions",""],["ListSuiteRuns",""],["ListTagsForResource",""],["StartSuiteRun",""],["StopSuiteRun",""],["TagResource",""],["UntagResource",""],["UpdateSuiteDefinition",""]]});

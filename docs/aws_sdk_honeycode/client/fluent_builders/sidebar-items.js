@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["BatchCreateTableRows",""],["BatchDeleteTableRows",""],["BatchUpdateTableRows",""],["BatchUpsertTableRows",""],["DescribeTableDataImportJob",""],["GetScreenData",""],["InvokeScreenAutomation",""],["ListTableColumns",""],["ListTableRows",""],["ListTables",""],["QueryTableRows",""],["StartTableDataImportJob",""]]});

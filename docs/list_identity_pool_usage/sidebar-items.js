@@ -1,0 +1,1 @@
+initSidebarItems({"fn":[["main","Lists the identity pools registered with Amazon Cognito in the Region."]],"struct":[["Opt",""]]});

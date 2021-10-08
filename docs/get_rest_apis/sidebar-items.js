@@ -1,0 +1,1 @@
+initSidebarItems({"fn":[["main","Displays information about the Amazon API Gateway REST APIs in the Region."]],"struct":[["Opt",""]]});

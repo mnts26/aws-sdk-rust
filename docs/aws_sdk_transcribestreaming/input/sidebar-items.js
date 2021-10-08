@@ -1,0 +1,1 @@
+initSidebarItems({"mod":[["start_medical_stream_transcription_input","See `StartMedicalStreamTranscriptionInput`"],["start_stream_transcription_input","See `StartStreamTranscriptionInput`"]],"struct":[["StartMedicalStreamTranscriptionInput",""],["StartStreamTranscriptionInput",""]]});

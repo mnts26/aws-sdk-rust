@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["ContainerLevelMetrics",""],["ContainerStatus",""],["MethodName",""]],"mod":[["container","See `Container`"],["cors_rule","See `CorsRule`"],["metric_policy","See `MetricPolicy`"],["metric_policy_rule","See `MetricPolicyRule`"],["tag","See `Tag`"]],"struct":[["Container",""],["CorsRule",""],["MetricPolicy",""],["MetricPolicyRule",""],["Tag",""]]});

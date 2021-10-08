@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["Builder","A builder for `IbmDb2Settings`"]]});

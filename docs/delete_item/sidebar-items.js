@@ -1,0 +1,1 @@
+initSidebarItems({"fn":[["main","Deletes an item from an Amazon DynamoDB table. The table schema must use the key as the primary key."]],"struct":[["Opt",""]]});

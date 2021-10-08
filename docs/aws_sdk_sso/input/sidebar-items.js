@@ -1,0 +1,1 @@
+initSidebarItems({"mod":[["get_role_credentials_input","See `GetRoleCredentialsInput`"],["list_account_roles_input","See `ListAccountRolesInput`"],["list_accounts_input","See `ListAccountsInput`"],["logout_input","See `LogoutInput`"]],"struct":[["GetRoleCredentialsInput",""],["ListAccountRolesInput",""],["ListAccountsInput",""],["LogoutInput",""]]});

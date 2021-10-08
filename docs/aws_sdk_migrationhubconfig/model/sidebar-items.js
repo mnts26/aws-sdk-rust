@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["TargetType",""]],"mod":[["home_region_control","See `HomeRegionControl`"],["target","See `Target`"]],"struct":[["HomeRegionControl",""],["Target",""]]});

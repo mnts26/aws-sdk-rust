@@ -1,0 +1,1 @@
+initSidebarItems({"fn":[["headers_for_prefix",""],["many_dates","Read all the dates from the header map at `key` according the `format`"],["one_or_none","Read exactly one or none from a headers iterator"],["read_many_from_str",""],["read_many_primitive",""],["set_header_if_absent",""]],"struct":[["ParseError",""]]});

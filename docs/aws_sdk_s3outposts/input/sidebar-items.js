@@ -1,0 +1,1 @@
+initSidebarItems({"mod":[["create_endpoint_input","See `CreateEndpointInput`"],["delete_endpoint_input","See `DeleteEndpointInput`"],["list_endpoints_input","See `ListEndpointsInput`"]],"struct":[["CreateEndpointInput",""],["DeleteEndpointInput",""],["ListEndpointsInput",""]]});

@@ -1,0 +1,1 @@
+initSidebarItems({"mod":[["credentials","Load credentials from the environment"],["region","Load regions from the environment"]]});

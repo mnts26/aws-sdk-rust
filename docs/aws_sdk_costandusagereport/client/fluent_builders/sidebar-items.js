@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["DeleteReportDefinition",""],["DescribeReportDefinitions",""],["ModifyReportDefinition",""],["PutReportDefinition",""]]});

@@ -1,0 +1,1 @@
+initSidebarItems({"mod":[["future","Future wrapper returned by [`ProvideRegion`]"]],"struct":[["RegionProviderChain","Load a region by selecting the first from a series of region providers."]],"trait":[["ProvideRegion","Provide a `Region` to use with AWS requests"]]});

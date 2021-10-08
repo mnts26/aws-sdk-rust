@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["CreateEventIntegration",""],["DeleteEventIntegration",""],["GetEventIntegration",""],["ListEventIntegrationAssociations",""],["ListEventIntegrations",""],["ListTagsForResource",""],["TagResource",""],["UntagResource",""],["UpdateEventIntegration",""]]});

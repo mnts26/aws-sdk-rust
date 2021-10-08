@@ -1,0 +1,1 @@
+initSidebarItems({"mod":[["query_forecast_input","See `QueryForecastInput`"]],"struct":[["QueryForecastInput",""]]});

@@ -1,0 +1,1 @@
+initSidebarItems({"mod":[["describe_stream_input","See `DescribeStreamInput`"],["get_records_input","See `GetRecordsInput`"],["get_shard_iterator_input","See `GetShardIteratorInput`"],["list_streams_input","See `ListStreamsInput`"]],"struct":[["DescribeStreamInput",""],["GetRecordsInput",""],["GetShardIteratorInput",""],["ListStreamsInput",""]]});

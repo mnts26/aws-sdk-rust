@@ -1,0 +1,1 @@
+initSidebarItems({"fn":[["capture_request","Test connection used to capture a single request"]],"struct":[["CaptureRequestHandler","Test Connection to capture a single request"],["CaptureRequestReceiver","Receiver for `CaptureRequestHandler`"],["TestConnection","TestConnection for use with a `Client`."],["ValidateRequest",""]]});

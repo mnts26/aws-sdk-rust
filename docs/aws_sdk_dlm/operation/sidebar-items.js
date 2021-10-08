@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["CreateLifecyclePolicy",""],["DeleteLifecyclePolicy",""],["GetLifecyclePolicies",""],["GetLifecyclePolicy",""],["ListTagsForResource",""],["TagResource",""],["UntagResource",""],["UpdateLifecyclePolicy",""]]});

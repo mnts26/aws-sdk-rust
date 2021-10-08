@@ -1,0 +1,1 @@
+initSidebarItems({"mod":[["create_changeset_output","See `CreateChangesetOutput`"],["get_programmatic_access_credentials_output","See `GetProgrammaticAccessCredentialsOutput`"],["get_working_location_output","See `GetWorkingLocationOutput`"]],"struct":[["CreateChangesetOutput",""],["GetProgrammaticAccessCredentialsOutput",""],["GetWorkingLocationOutput",""]]});

@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["Builder","Builder for AWS Shared Configuration"],["Config","AWS Shared Configuration"]]});

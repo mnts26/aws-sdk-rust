@@ -1,0 +1,1 @@
+initSidebarItems({"mod":[["sleep","Provides an [`AsyncSleep`] trait that returns a future that sleeps for a given duration, and implementations of `AsyncSleep` for different async runtimes."]]});

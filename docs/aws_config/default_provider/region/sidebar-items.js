@@ -1,0 +1,1 @@
+initSidebarItems({"fn":[["default_provider","Default Region Provider chain"]],"struct":[["Builder","Builder for [DefaultRegionChain]"],["DefaultRegionChain","Default region provider chain"]]});

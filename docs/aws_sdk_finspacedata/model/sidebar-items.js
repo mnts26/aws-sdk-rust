@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["ChangeType",""],["ChangesetStatus",""],["ErrorCategory",""],["FormatType",""],["LocationType",""],["SourceType",""]],"mod":[["changeset_info","See `ChangesetInfo`"],["credentials","See `Credentials`"],["error_info","See `ErrorInfo`"]],"struct":[["ChangesetInfo",""],["Credentials",""],["ErrorInfo",""]]});

@@ -1,0 +1,1 @@
+initSidebarItems({"mod":[["search_input","See `SearchInput`"],["suggest_input","See `SuggestInput`"],["upload_documents_input","See `UploadDocumentsInput`"]],"struct":[["SearchInput",""],["SuggestInput",""],["UploadDocumentsInput",""]]});

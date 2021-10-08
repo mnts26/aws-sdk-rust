@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["GetPersonalizedRankingErrorKind",""],["GetRecommendationsErrorKind",""]],"mod":[["invalid_input_exception","See `InvalidInputException`"],["resource_not_found_exception","See `ResourceNotFoundException`"]],"struct":[["GetPersonalizedRankingError",""],["GetRecommendationsError",""],["InvalidInputException",""],["ResourceNotFoundException",""]]});

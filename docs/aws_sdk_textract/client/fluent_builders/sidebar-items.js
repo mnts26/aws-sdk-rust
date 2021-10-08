@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["AnalyzeDocument",""],["AnalyzeExpense",""],["DetectDocumentText",""],["GetDocumentAnalysis",""],["GetDocumentTextDetection",""],["StartDocumentAnalysis",""],["StartDocumentTextDetection",""]]});

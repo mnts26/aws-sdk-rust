@@ -1,0 +1,1 @@
+initSidebarItems({"mod":[["create_token_input","See `CreateTokenInput`"],["register_client_input","See `RegisterClientInput`"],["start_device_authorization_input","See `StartDeviceAuthorizationInput`"]],"struct":[["CreateTokenInput",""],["RegisterClientInput",""],["StartDeviceAuthorizationInput",""]]});

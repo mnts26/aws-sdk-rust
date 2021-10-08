@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["CreateCliToken",""],["CreateEnvironment",""],["CreateWebLoginToken",""],["DeleteEnvironment",""],["GetEnvironment",""],["ListEnvironments",""],["ListTagsForResource",""],["PublishMetrics","An operation for publishing metrics from the customers to the Ops plane."],["TagResource",""],["UntagResource",""],["UpdateEnvironment",""]]});

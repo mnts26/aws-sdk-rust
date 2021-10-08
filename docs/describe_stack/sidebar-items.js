@@ -1,0 +1,1 @@
+initSidebarItems({"fn":[["main","Retrieves the status of a CloudFormation stack in the Region."]],"struct":[["Opt",""]]});

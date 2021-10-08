@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["StrBytes","UTF-8 string byte buffer representation with validation amortization. When `StrBytes` is constructed from a `&str` or `String`, its underlying bytes are assumed to be valid UTF-8. Otherwise, if constructed from a byte source, the construction will be fallible."]]});

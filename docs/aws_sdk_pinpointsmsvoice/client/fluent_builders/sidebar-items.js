@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["CreateConfigurationSet",""],["CreateConfigurationSetEventDestination",""],["DeleteConfigurationSet",""],["DeleteConfigurationSetEventDestination",""],["GetConfigurationSetEventDestinations",""],["ListConfigurationSets",""],["SendVoiceMessage",""],["UpdateConfigurationSetEventDestination",""]]});

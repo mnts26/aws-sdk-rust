@@ -1,0 +1,1 @@
+initSidebarItems({"mod":[["create_home_region_control_output","See `CreateHomeRegionControlOutput`"],["describe_home_region_controls_output","See `DescribeHomeRegionControlsOutput`"],["get_home_region_output","See `GetHomeRegionOutput`"]],"struct":[["CreateHomeRegionControlOutput",""],["DescribeHomeRegionControlsOutput",""],["GetHomeRegionOutput",""]]});

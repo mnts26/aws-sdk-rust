@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["PropertyBag","A type-map of configuration data."],["SharedPropertyBag","A wrapper of [`PropertyBag`] that can be safely shared across threads and cheaply cloned."]]});

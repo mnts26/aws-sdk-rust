@@ -1,0 +1,1 @@
+initSidebarItems({"fn":[["main","Displays some information about the Amazon Elastic Block Store snapshots you own in the Region."]],"struct":[["Opt",""]]});

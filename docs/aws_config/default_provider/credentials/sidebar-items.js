@@ -1,0 +1,1 @@
+initSidebarItems({"fn":[["default_provider","Default Credentials Provider chain"]],"struct":[["Builder","Builder for `DefaultCredentialsChain`"],["DefaultCredentialsChain","Default AWS Credential Provider Chain"]]});

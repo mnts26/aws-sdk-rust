@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["AssociateMemberAccount",""],["AssociateS3Resources",""],["DisassociateMemberAccount",""],["DisassociateS3Resources",""],["ListMemberAccounts",""],["ListS3Resources",""],["UpdateS3Resources",""]]});

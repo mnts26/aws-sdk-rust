@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["BuildError","Error constructing IMDSv2 Client"],["EndpointMode","IMDSv2 Endpoint Mode"],["ImdsError","An error retrieving metadata from IMDS"],["TokenError","Error retrieving token from IMDS"]],"struct":[["Builder","IMDSv2 Client Builder"],["Client","IMDSv2 Client"],["InvalidEndpointMode","Invalid Endpoint Mode"]]});

@@ -1,0 +1,1 @@
+initSidebarItems({"fn":[["main","Deletes an Amazon Elastic Block Store snapshot. It must be `completed` before you can use the snapshot."]],"struct":[["Opt",""]]});

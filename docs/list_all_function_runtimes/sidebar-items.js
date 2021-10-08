@@ -1,0 +1,1 @@
+initSidebarItems({"fn":[["main","Lists the ARNs and runtimes of your Lambda functions in all available regions."],["show_lambdas","Lists the Lambda ARNs and runtimes in the given AWS Region."]],"struct":[["Opt",""]]});

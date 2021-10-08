@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["SearchErrorKind",""],["SuggestErrorKind",""],["UploadDocumentsErrorKind",""]],"mod":[["document_service_exception","See `DocumentServiceException`"],["search_exception","See `SearchException`"]],"struct":[["DocumentServiceException",""],["SearchError",""],["SearchException",""],["SuggestError",""],["UploadDocumentsError",""]]});

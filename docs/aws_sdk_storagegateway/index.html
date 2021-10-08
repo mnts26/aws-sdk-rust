@@ -1,0 +1,75 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Storage Gateway Service"><meta name="keywords" content="rust, rustlang, rust-lang, aws_sdk_storagegateway"><title>aws_sdk_storagegateway - Rust</title><link rel="stylesheet" type="text/css" href="../normalize.css"><link rel="stylesheet" type="text/css" href="../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../ayu.css" disabled ><script id="default-settings" ></script><script src="../storage.js"></script><script src="../crates.js"></script><noscript><link rel="stylesheet" href="../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../favicon.svg"><style type="text/css">#crate-search{background-image:url("../down-arrow.svg");}</style></head><body class="rustdoc mod crate"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../aws_sdk_storagegateway/index.html'><div class='logo-container rust-logo'><img src='../rust-logo.png' alt='logo'></div></a><h2 class="location">Crate aws_sdk_storagegateway</h2><div class="block version"><div class="narrow-helper"></div><p>Version 0.0.19-alpha</p></div><div class="sidebar-elems"><a id="all-types" href="all.html"><p>See all aws_sdk_storagegateway's items</p></a><div class="block items"><ul><li><a href="#modules">Modules</a></li><li><a href="#structs">Structs</a></li><li><a href="#enums">Enums</a></li><li><a href="#statics">Statics</a></li></ul></div><div id="sidebar-vars" data-name="aws_sdk_storagegateway" data-ty="mod" data-relpath=""></div><script defer src="sidebar-items.js"></script></div></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="18" height="18" alt="Pick another theme!" src="../brush.svg"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../settings.html" title="settings"><img width="18" height="18" alt="Change settings" src="../wheel.svg"></a></div></form></nav><section id="main" class="content"><h1 class="fqn"><span class="in-band">Crate <a class="mod" href="#">aws_sdk_storagegateway</a><button id="copy-path" onclick="copy_path(this)" title="Copy item path to clipboard"><img src="../clipboard.svg" width="19" height="18" alt="Copy item path"></button></span><span class="out-of-band"><span id="render-detail"><a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">[<span class="inner">&#x2212;</span>]</a></span><a class="srclink" href="../src/aws_sdk_storagegateway/lib.rs.html#1-103" title="goto source code">[src]</a></span></h1><details class="rustdoc-toggle top-doc" open><summary class="hideme"><span>Expand description</span></summary><div class="docblock"><p><fullname>Storage Gateway Service</fullname></p>
+<p>Storage Gateway is the service that connects an on-premises software appliance with
+cloud-based storage to provide seamless and secure integration between an
+organization's on-premises IT environment and the Amazon Web Services storage infrastructure. The
+service enables you to securely upload data to the Cloud for cost effective backup and
+rapid disaster recovery.</p>
+<p>Use the following links to get started using the <i>Storage Gateway Service
+API Reference</i>:</p>
+<ul>
+<li>
+<p>
+<a href="https://docs.aws.amazon.com/storagegateway/latest/userguide/AWSStorageGatewayAPI.html#AWSStorageGatewayHTTPRequestsHeaders">Storage Gateway required request headers</a>: Describes the required
+headers that you must send with every POST request to Storage Gateway.</p>
+</li>
+<li>
+<p>
+<a href="https://docs.aws.amazon.com/storagegateway/latest/userguide/AWSStorageGatewayAPI.html#AWSStorageGatewaySigningRequests">Signing requests</a>: Storage Gateway requires that you authenticate
+every request you send; this topic describes how sign such a request.</p>
+</li>
+<li>
+<p>
+<a href="https://docs.aws.amazon.com/storagegateway/latest/userguide/AWSStorageGatewayAPI.html#APIErrorResponses">Error responses</a>: Provides reference information about Storage Gateway
+errors.</p>
+</li>
+<li>
+<p>
+<a href="https://docs.aws.amazon.com/storagegateway/latest/APIReference/API_Operations.html">Operations in
+Storage Gateway</a>: Contains detailed descriptions of all Storage Gateway
+operations, their request parameters, response elements, possible errors, and
+examples of requests and responses.</p>
+</li>
+<li>
+<p>
+<a href="https://docs.aws.amazon.com/general/latest/gr/sg.html">Storage Gateway
+endpoints and quotas</a>: Provides a list of each Region and the endpoints
+available for use with Storage Gateway.</p>
+</li>
+</ul>
+<note>
+<p>Storage Gateway resource IDs are in uppercase. When you use these resource IDs
+with the Amazon EC2 API, EC2 expects resource IDs in lowercase. You must change your
+resource ID to lowercase to use it with the EC2 API. For example, in Storage Gateway the
+ID for a volume might be <code>vol-AA22BB012345DAF670</code>. When you use this ID with
+the EC2 API, you must change it to <code>vol-aa22bb012345daf670</code>. Otherwise, the
+EC2 API might not behave as expected.</p>
+</note>
+<important>
+<p>IDs for Storage Gateway volumes and Amazon EBS snapshots created from gateway volumes
+are changing to a longer format. Starting in December 2016, all new volumes and
+snapshots will be created with a 17-character string. Starting in April 2016, you will
+be able to use these longer IDs so you can test your systems with the new format. For
+more information, see <a href="http://aws.amazon.com/ec2/faqs/#longer-ids">Longer EC2 and
+EBS resource IDs</a>.</p>
+<p>For example, a volume Amazon Resource Name (ARN) with the longer volume ID format
+looks like the following:</p>
+<p>
+<code>arn:aws:storagegateway:us-west-2:111122223333:gateway/sgw-12A3456B/volume/vol-1122AABBCCDDEEFFG</code>.</p>
+<p>A snapshot ID with the longer ID format looks like the following:
+<code>snap-78e226633445566ee</code>.</p>
+<p>For more information, see <a href="http://forums.aws.amazon.com/ann.jspa?annID=3557">Announcement:
+Heads-up – Longer Storage Gateway volume and snapshot IDs coming in
+2016</a>.</p>
+</important></div></details><h2 id="reexports" class="section-header"><a href="#reexports">Re-exports</a></h2>
+<div class="item-table"><div class="item-row"><div class="item-left import-item"><code>pub use config::<a class="struct" href="config/struct.Config.html" title="struct aws_sdk_storagegateway::config::Config">Config</a>;</code></div><div class="item-right docblock-short"></div></div><div class="item-row"><div class="item-left import-item"><code>pub use client::<a class="struct" href="client/struct.Client.html" title="struct aws_sdk_storagegateway::client::Client">Client</a>;</code></div><div class="item-right docblock-short"></div></div></div><h2 id="modules" class="section-header"><a href="#modules">Modules</a></h2>
+<div class="item-table"><div class="item-row"><div class="item-left module-item"><a class="mod" href="client/index.html" title="aws_sdk_storagegateway::client mod">client</a></div><div class="item-right docblock-short"></div></div><div class="item-row"><div class="item-left module-item"><a class="mod" href="config/index.html" title="aws_sdk_storagegateway::config mod">config</a></div><div class="item-right docblock-short"></div></div><div class="item-row"><div class="item-left module-item"><a class="mod" href="error/index.html" title="aws_sdk_storagegateway::error mod">error</a></div><div class="item-right docblock-short"></div></div><div class="item-row"><div class="item-left module-item"><a class="mod" href="input/index.html" title="aws_sdk_storagegateway::input mod">input</a></div><div class="item-right docblock-short"></div></div><div class="item-row"><div class="item-left module-item"><a class="mod" href="model/index.html" title="aws_sdk_storagegateway::model mod">model</a></div><div class="item-right docblock-short"></div></div><div class="item-row"><div class="item-left module-item"><a class="mod" href="operation/index.html" title="aws_sdk_storagegateway::operation mod">operation</a></div><div class="item-right docblock-short"></div></div><div class="item-row"><div class="item-left module-item"><a class="mod" href="output/index.html" title="aws_sdk_storagegateway::output mod">output</a></div><div class="item-right docblock-short"></div></div></div><h2 id="structs" class="section-header"><a href="#structs">Structs</a></h2>
+<div class="item-table"><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.Blob.html" title="aws_sdk_storagegateway::Blob struct">Blob</a></div><div class="item-right docblock-short"></div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.ByteStream.html" title="aws_sdk_storagegateway::ByteStream struct">ByteStream</a></div><div class="item-right docblock-short"><p>Stream of binary data</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.Credentials.html" title="aws_sdk_storagegateway::Credentials struct">Credentials</a></div><div class="item-right docblock-short"><p>AWS SDK Credentials</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.Endpoint.html" title="aws_sdk_storagegateway::Endpoint struct">Endpoint</a></div><div class="item-right docblock-short"><p>API Endpoint</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.Region.html" title="aws_sdk_storagegateway::Region struct">Region</a></div><div class="item-right docblock-short"><p>The region to send requests to.</p>
+</div></div></div><h2 id="enums" class="section-header"><a href="#enums">Enums</a></h2>
+<div class="item-table"><div class="item-row"><div class="item-left module-item"><a class="enum" href="enum.Error.html" title="aws_sdk_storagegateway::Error enum">Error</a></div><div class="item-right docblock-short"></div></div><div class="item-row"><div class="item-left module-item"><a class="enum" href="enum.SdkError.html" title="aws_sdk_storagegateway::SdkError enum">SdkError</a></div><div class="item-right docblock-short"><p>Failed SDK Result</p>
+</div></div></div><h2 id="statics" class="section-header"><a href="#statics">Statics</a></h2>
+<div class="item-table"><div class="item-row"><div class="item-left module-item"><a class="static" href="static.PKG_VERSION.html" title="aws_sdk_storagegateway::PKG_VERSION static">PKG_VERSION</a></div><div class="item-right docblock-short"></div></div></div></section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../" data-current-crate="aws_sdk_storagegateway" data-search-index-js="../search-index.js" data-search-js="../search.js"></div>
+    <script src="../main.js"></script>
+</body></html>

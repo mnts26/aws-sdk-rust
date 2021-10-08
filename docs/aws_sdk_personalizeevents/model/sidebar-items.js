@@ -1,0 +1,1 @@
+initSidebarItems({"mod":[["event","See `Event`"],["item","See `Item`"],["user","See `User`"]],"struct":[["Event",""],["Item",""],["User",""]]});

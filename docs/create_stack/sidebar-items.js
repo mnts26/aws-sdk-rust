@@ -1,0 +1,1 @@
+initSidebarItems({"fn":[["main","Creates a CloudFormation stack in the region."]],"struct":[["Opt",""]]});

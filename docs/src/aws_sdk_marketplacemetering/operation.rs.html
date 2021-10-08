@@ -1,0 +1,332 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `marketplacemetering&#x2F;src&#x2F;operation.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>operation.rs - source</title><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled ><script id="default-settings" ></script><script src="../../storage.js"></script><script src="../../crates.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../favicon.svg"><style type="text/css">#crate-search{background-image:url("../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../aws_sdk_marketplacemetering/index.html'><div class='logo-container rust-logo'><img src='../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="18" height="18" alt="Pick another theme!" src="../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../settings.html" title="settings"><img width="18" height="18" alt="Change settings" src="../../wheel.svg"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">  1</span>
+<span id="2">  2</span>
+<span id="3">  3</span>
+<span id="4">  4</span>
+<span id="5">  5</span>
+<span id="6">  6</span>
+<span id="7">  7</span>
+<span id="8">  8</span>
+<span id="9">  9</span>
+<span id="10"> 10</span>
+<span id="11"> 11</span>
+<span id="12"> 12</span>
+<span id="13"> 13</span>
+<span id="14"> 14</span>
+<span id="15"> 15</span>
+<span id="16"> 16</span>
+<span id="17"> 17</span>
+<span id="18"> 18</span>
+<span id="19"> 19</span>
+<span id="20"> 20</span>
+<span id="21"> 21</span>
+<span id="22"> 22</span>
+<span id="23"> 23</span>
+<span id="24"> 24</span>
+<span id="25"> 25</span>
+<span id="26"> 26</span>
+<span id="27"> 27</span>
+<span id="28"> 28</span>
+<span id="29"> 29</span>
+<span id="30"> 30</span>
+<span id="31"> 31</span>
+<span id="32"> 32</span>
+<span id="33"> 33</span>
+<span id="34"> 34</span>
+<span id="35"> 35</span>
+<span id="36"> 36</span>
+<span id="37"> 37</span>
+<span id="38"> 38</span>
+<span id="39"> 39</span>
+<span id="40"> 40</span>
+<span id="41"> 41</span>
+<span id="42"> 42</span>
+<span id="43"> 43</span>
+<span id="44"> 44</span>
+<span id="45"> 45</span>
+<span id="46"> 46</span>
+<span id="47"> 47</span>
+<span id="48"> 48</span>
+<span id="49"> 49</span>
+<span id="50"> 50</span>
+<span id="51"> 51</span>
+<span id="52"> 52</span>
+<span id="53"> 53</span>
+<span id="54"> 54</span>
+<span id="55"> 55</span>
+<span id="56"> 56</span>
+<span id="57"> 57</span>
+<span id="58"> 58</span>
+<span id="59"> 59</span>
+<span id="60"> 60</span>
+<span id="61"> 61</span>
+<span id="62"> 62</span>
+<span id="63"> 63</span>
+<span id="64"> 64</span>
+<span id="65"> 65</span>
+<span id="66"> 66</span>
+<span id="67"> 67</span>
+<span id="68"> 68</span>
+<span id="69"> 69</span>
+<span id="70"> 70</span>
+<span id="71"> 71</span>
+<span id="72"> 72</span>
+<span id="73"> 73</span>
+<span id="74"> 74</span>
+<span id="75"> 75</span>
+<span id="76"> 76</span>
+<span id="77"> 77</span>
+<span id="78"> 78</span>
+<span id="79"> 79</span>
+<span id="80"> 80</span>
+<span id="81"> 81</span>
+<span id="82"> 82</span>
+<span id="83"> 83</span>
+<span id="84"> 84</span>
+<span id="85"> 85</span>
+<span id="86"> 86</span>
+<span id="87"> 87</span>
+<span id="88"> 88</span>
+<span id="89"> 89</span>
+<span id="90"> 90</span>
+<span id="91"> 91</span>
+<span id="92"> 92</span>
+<span id="93"> 93</span>
+<span id="94"> 94</span>
+<span id="95"> 95</span>
+<span id="96"> 96</span>
+<span id="97"> 97</span>
+<span id="98"> 98</span>
+<span id="99"> 99</span>
+<span id="100">100</span>
+<span id="101">101</span>
+<span id="102">102</span>
+<span id="103">103</span>
+<span id="104">104</span>
+<span id="105">105</span>
+<span id="106">106</span>
+<span id="107">107</span>
+<span id="108">108</span>
+<span id="109">109</span>
+<span id="110">110</span>
+<span id="111">111</span>
+<span id="112">112</span>
+<span id="113">113</span>
+<span id="114">114</span>
+<span id="115">115</span>
+<span id="116">116</span>
+<span id="117">117</span>
+<span id="118">118</span>
+<span id="119">119</span>
+<span id="120">120</span>
+<span id="121">121</span>
+<span id="122">122</span>
+<span id="123">123</span>
+<span id="124">124</span>
+<span id="125">125</span>
+<span id="126">126</span>
+<span id="127">127</span>
+<span id="128">128</span>
+<span id="129">129</span>
+<span id="130">130</span>
+<span id="131">131</span>
+<span id="132">132</span>
+<span id="133">133</span>
+<span id="134">134</span>
+<span id="135">135</span>
+<span id="136">136</span>
+<span id="137">137</span>
+<span id="138">138</span>
+<span id="139">139</span>
+<span id="140">140</span>
+<span id="141">141</span>
+<span id="142">142</span>
+<span id="143">143</span>
+<span id="144">144</span>
+<span id="145">145</span>
+<span id="146">146</span>
+<span id="147">147</span>
+<span id="148">148</span>
+<span id="149">149</span>
+<span id="150">150</span>
+<span id="151">151</span>
+<span id="152">152</span>
+<span id="153">153</span>
+<span id="154">154</span>
+<span id="155">155</span>
+<span id="156">156</span>
+<span id="157">157</span>
+<span id="158">158</span>
+<span id="159">159</span>
+<span id="160">160</span>
+<span id="161">161</span>
+<span id="162">162</span>
+<span id="163">163</span>
+<span id="164">164</span>
+</pre><pre class="rust"><code><span class="comment">// Code generated by software.amazon.smithy.rust.codegen.smithy-rs. DO NOT EDIT.</span>
+<span class="doccomment">/// &lt;p&gt;BatchMeterUsage is called from a SaaS application listed on the AWS Marketplace to</span>
+<span class="doccomment">/// post metering records for a set of customers.&lt;/p&gt;</span>
+<span class="doccomment">/// &lt;p&gt;For identical requests, the API is idempotent; requests can be retried with the</span>
+<span class="doccomment">/// same records or a subset of the input records.&lt;/p&gt;</span>
+<span class="doccomment">/// &lt;p&gt;Every request to BatchMeterUsage is for one product. If you need to meter usage for</span>
+<span class="doccomment">/// multiple products, you must make multiple calls to BatchMeterUsage.&lt;/p&gt;</span>
+<span class="doccomment">/// &lt;p&gt;BatchMeterUsage can process up to 25 UsageRecords at a time.&lt;/p&gt;</span>
+<span class="doccomment">/// &lt;p&gt;A UsageRecord can optionally include multiple usage allocations, to provide customers</span>
+<span class="doccomment">/// with usagedata split into buckets by tags that you define (or allow the customer to</span>
+<span class="doccomment">/// define).&lt;/p&gt;</span>
+<span class="doccomment">/// &lt;p&gt;BatchMeterUsage requests must be less than 1MB in size.&lt;/p&gt;</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">std::default::Default</span>, <span class="ident">std::clone::Clone</span>, <span class="ident">std::fmt::Debug</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">BatchMeterUsage</span> {
+    <span class="ident">_private</span>: (),
+}
+<span class="kw">impl</span> <span class="ident">BatchMeterUsage</span> {
+    <span class="doccomment">/// Creates a new builder-style object to manufacture [`BatchMeterUsageInput`](crate::input::BatchMeterUsageInput)</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">builder</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident"><span class="kw">crate</span>::input::batch_meter_usage_input::Builder</span> {
+        <span class="ident"><span class="kw">crate</span>::input::batch_meter_usage_input::Builder::default</span>()
+    }
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+        <span class="self">Self</span> { <span class="ident">_private</span>: () }
+    }
+}
+<span class="kw">impl</span> <span class="ident">smithy_http::response::ParseStrictResponse</span> <span class="kw">for</span> <span class="ident">BatchMeterUsage</span> {
+    <span class="kw">type</span> <span class="ident">Output</span> <span class="op">=</span> <span class="ident">std::result::Result</span><span class="op">&lt;</span>
+        <span class="ident"><span class="kw">crate</span>::output::BatchMeterUsageOutput</span>,
+        <span class="ident"><span class="kw">crate</span>::error::BatchMeterUsageError</span>,
+    <span class="op">&gt;</span>;
+    <span class="kw">fn</span> <span class="ident">parse</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">response</span>: <span class="kw-2">&amp;</span><span class="ident">http::Response</span><span class="op">&lt;</span><span class="ident">bytes::Bytes</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident"><span class="self">Self</span>::Output</span> {
+        <span class="kw">if</span> <span class="op">!</span><span class="ident">response</span>.<span class="ident">status</span>().<span class="ident">is_success</span>() <span class="op">&amp;&amp;</span> <span class="ident">response</span>.<span class="ident">status</span>().<span class="ident">as_u16</span>() <span class="op">!</span><span class="op">=</span> <span class="number">200</span> {
+            <span class="ident"><span class="kw">crate</span>::operation_deser::parse_batch_meter_usage_error</span>(<span class="ident">response</span>)
+        } <span class="kw">else</span> {
+            <span class="ident"><span class="kw">crate</span>::operation_deser::parse_batch_meter_usage_response</span>(<span class="ident">response</span>)
+        }
+    }
+}
+
+<span class="doccomment">/// &lt;p&gt;API to emit metering records. For identical requests, the API is idempotent. It</span>
+<span class="doccomment">/// simply returns the metering record ID.&lt;/p&gt;</span>
+<span class="doccomment">/// &lt;p&gt;MeterUsage is authenticated on the buyer&#39;s AWS account using credentials from the</span>
+<span class="doccomment">/// EC2 instance, ECS task, or EKS pod.&lt;/p&gt;</span>
+<span class="doccomment">/// &lt;p&gt;MeterUsage can optionally include multiple usage allocations, to provide customers</span>
+<span class="doccomment">/// with usage data split into buckets by tags that you define (or allow the customer to</span>
+<span class="doccomment">/// define).&lt;/p&gt;</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">std::default::Default</span>, <span class="ident">std::clone::Clone</span>, <span class="ident">std::fmt::Debug</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">MeterUsage</span> {
+    <span class="ident">_private</span>: (),
+}
+<span class="kw">impl</span> <span class="ident">MeterUsage</span> {
+    <span class="doccomment">/// Creates a new builder-style object to manufacture [`MeterUsageInput`](crate::input::MeterUsageInput)</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">builder</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident"><span class="kw">crate</span>::input::meter_usage_input::Builder</span> {
+        <span class="ident"><span class="kw">crate</span>::input::meter_usage_input::Builder::default</span>()
+    }
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+        <span class="self">Self</span> { <span class="ident">_private</span>: () }
+    }
+}
+<span class="kw">impl</span> <span class="ident">smithy_http::response::ParseStrictResponse</span> <span class="kw">for</span> <span class="ident">MeterUsage</span> {
+    <span class="kw">type</span> <span class="ident">Output</span> <span class="op">=</span>
+        <span class="ident">std::result::Result</span><span class="op">&lt;</span><span class="ident"><span class="kw">crate</span>::output::MeterUsageOutput</span>, <span class="ident"><span class="kw">crate</span>::error::MeterUsageError</span><span class="op">&gt;</span>;
+    <span class="kw">fn</span> <span class="ident">parse</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">response</span>: <span class="kw-2">&amp;</span><span class="ident">http::Response</span><span class="op">&lt;</span><span class="ident">bytes::Bytes</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident"><span class="self">Self</span>::Output</span> {
+        <span class="kw">if</span> <span class="op">!</span><span class="ident">response</span>.<span class="ident">status</span>().<span class="ident">is_success</span>() <span class="op">&amp;&amp;</span> <span class="ident">response</span>.<span class="ident">status</span>().<span class="ident">as_u16</span>() <span class="op">!</span><span class="op">=</span> <span class="number">200</span> {
+            <span class="ident"><span class="kw">crate</span>::operation_deser::parse_meter_usage_error</span>(<span class="ident">response</span>)
+        } <span class="kw">else</span> {
+            <span class="ident"><span class="kw">crate</span>::operation_deser::parse_meter_usage_response</span>(<span class="ident">response</span>)
+        }
+    }
+}
+
+<span class="doccomment">/// &lt;p&gt;Paid container software products sold through AWS Marketplace must integrate with</span>
+<span class="doccomment">/// the AWS Marketplace Metering Service and call the RegisterUsage operation for software</span>
+<span class="doccomment">/// entitlement and metering. Free and BYOL products for Amazon ECS or Amazon EKS aren&#39;t</span>
+<span class="doccomment">/// required to call RegisterUsage, but you may choose to do so if you would like to receive</span>
+<span class="doccomment">/// usage data in your seller reports. The sections below explain the behavior of</span>
+<span class="doccomment">/// RegisterUsage. RegisterUsage performs two primary functions: metering and</span>
+<span class="doccomment">/// entitlement.&lt;/p&gt;</span>
+<span class="doccomment">/// &lt;ul&gt;</span>
+<span class="doccomment">/// &lt;li&gt;</span>
+<span class="doccomment">/// &lt;p&gt;</span>
+<span class="doccomment">/// &lt;i&gt;Entitlement&lt;/i&gt;: RegisterUsage allows you to verify that the</span>
+<span class="doccomment">/// customer running your paid software is subscribed to your product on AWS</span>
+<span class="doccomment">/// Marketplace, enabling you to guard against unauthorized use. Your container</span>
+<span class="doccomment">/// image that integrates with RegisterUsage is only required to guard against</span>
+<span class="doccomment">/// unauthorized use at container startup, as such a</span>
+<span class="doccomment">/// CustomerNotSubscribedException/PlatformNotSupportedException will only be thrown</span>
+<span class="doccomment">/// on the initial call to RegisterUsage. Subsequent calls from the same Amazon ECS</span>
+<span class="doccomment">/// task instance (e.g. task-id) or Amazon EKS pod will not throw a</span>
+<span class="doccomment">/// CustomerNotSubscribedException, even if the customer unsubscribes while the</span>
+<span class="doccomment">/// Amazon ECS task or Amazon EKS pod is still running.&lt;/p&gt;</span>
+<span class="doccomment">/// &lt;/li&gt;</span>
+<span class="doccomment">/// &lt;li&gt;</span>
+<span class="doccomment">/// &lt;p&gt;</span>
+<span class="doccomment">/// &lt;i&gt;Metering&lt;/i&gt;: RegisterUsage meters software use per ECS task,</span>
+<span class="doccomment">/// per hour, or per pod for Amazon EKS with usage prorated to the second. A minimum</span>
+<span class="doccomment">/// of 1 minute of usage applies to tasks that are short lived. For example, if a</span>
+<span class="doccomment">/// customer has a 10 node Amazon ECS or Amazon EKS cluster and a service configured</span>
+<span class="doccomment">/// as a Daemon Set, then Amazon ECS or Amazon EKS will launch a task on all 10</span>
+<span class="doccomment">/// cluster nodes and the customer will be charged: (10 * hourly_rate). Metering for</span>
+<span class="doccomment">/// software use is automatically handled by the AWS Marketplace Metering Control</span>
+<span class="doccomment">/// Plane -- your software is not required to perform any metering specific actions,</span>
+<span class="doccomment">/// other than call RegisterUsage once for metering of software use to commence. The</span>
+<span class="doccomment">/// AWS Marketplace Metering Control Plane will also continue to bill customers for</span>
+<span class="doccomment">/// running ECS tasks and Amazon EKS pods, regardless of the customers subscription</span>
+<span class="doccomment">/// state, removing the need for your software to perform entitlement checks at</span>
+<span class="doccomment">/// runtime.&lt;/p&gt;</span>
+<span class="doccomment">/// &lt;/li&gt;</span>
+<span class="doccomment">/// &lt;/ul&gt;</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">std::default::Default</span>, <span class="ident">std::clone::Clone</span>, <span class="ident">std::fmt::Debug</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">RegisterUsage</span> {
+    <span class="ident">_private</span>: (),
+}
+<span class="kw">impl</span> <span class="ident">RegisterUsage</span> {
+    <span class="doccomment">/// Creates a new builder-style object to manufacture [`RegisterUsageInput`](crate::input::RegisterUsageInput)</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">builder</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident"><span class="kw">crate</span>::input::register_usage_input::Builder</span> {
+        <span class="ident"><span class="kw">crate</span>::input::register_usage_input::Builder::default</span>()
+    }
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+        <span class="self">Self</span> { <span class="ident">_private</span>: () }
+    }
+}
+<span class="kw">impl</span> <span class="ident">smithy_http::response::ParseStrictResponse</span> <span class="kw">for</span> <span class="ident">RegisterUsage</span> {
+    <span class="kw">type</span> <span class="ident">Output</span> <span class="op">=</span>
+        <span class="ident">std::result::Result</span><span class="op">&lt;</span><span class="ident"><span class="kw">crate</span>::output::RegisterUsageOutput</span>, <span class="ident"><span class="kw">crate</span>::error::RegisterUsageError</span><span class="op">&gt;</span>;
+    <span class="kw">fn</span> <span class="ident">parse</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">response</span>: <span class="kw-2">&amp;</span><span class="ident">http::Response</span><span class="op">&lt;</span><span class="ident">bytes::Bytes</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident"><span class="self">Self</span>::Output</span> {
+        <span class="kw">if</span> <span class="op">!</span><span class="ident">response</span>.<span class="ident">status</span>().<span class="ident">is_success</span>() <span class="op">&amp;&amp;</span> <span class="ident">response</span>.<span class="ident">status</span>().<span class="ident">as_u16</span>() <span class="op">!</span><span class="op">=</span> <span class="number">200</span> {
+            <span class="ident"><span class="kw">crate</span>::operation_deser::parse_register_usage_error</span>(<span class="ident">response</span>)
+        } <span class="kw">else</span> {
+            <span class="ident"><span class="kw">crate</span>::operation_deser::parse_register_usage_response</span>(<span class="ident">response</span>)
+        }
+    }
+}
+
+<span class="doccomment">/// &lt;p&gt;ResolveCustomer is called by a SaaS application during the registration process.</span>
+<span class="doccomment">/// When a buyer visits your website during the registration process, the buyer submits a</span>
+<span class="doccomment">/// registration token through their browser. The registration token is resolved through</span>
+<span class="doccomment">/// this API to obtain a CustomerIdentifier and product code.&lt;/p&gt;</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">std::default::Default</span>, <span class="ident">std::clone::Clone</span>, <span class="ident">std::fmt::Debug</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ResolveCustomer</span> {
+    <span class="ident">_private</span>: (),
+}
+<span class="kw">impl</span> <span class="ident">ResolveCustomer</span> {
+    <span class="doccomment">/// Creates a new builder-style object to manufacture [`ResolveCustomerInput`](crate::input::ResolveCustomerInput)</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">builder</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident"><span class="kw">crate</span>::input::resolve_customer_input::Builder</span> {
+        <span class="ident"><span class="kw">crate</span>::input::resolve_customer_input::Builder::default</span>()
+    }
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+        <span class="self">Self</span> { <span class="ident">_private</span>: () }
+    }
+}
+<span class="kw">impl</span> <span class="ident">smithy_http::response::ParseStrictResponse</span> <span class="kw">for</span> <span class="ident">ResolveCustomer</span> {
+    <span class="kw">type</span> <span class="ident">Output</span> <span class="op">=</span> <span class="ident">std::result::Result</span><span class="op">&lt;</span>
+        <span class="ident"><span class="kw">crate</span>::output::ResolveCustomerOutput</span>,
+        <span class="ident"><span class="kw">crate</span>::error::ResolveCustomerError</span>,
+    <span class="op">&gt;</span>;
+    <span class="kw">fn</span> <span class="ident">parse</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">response</span>: <span class="kw-2">&amp;</span><span class="ident">http::Response</span><span class="op">&lt;</span><span class="ident">bytes::Bytes</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident"><span class="self">Self</span>::Output</span> {
+        <span class="kw">if</span> <span class="op">!</span><span class="ident">response</span>.<span class="ident">status</span>().<span class="ident">is_success</span>() <span class="op">&amp;&amp;</span> <span class="ident">response</span>.<span class="ident">status</span>().<span class="ident">as_u16</span>() <span class="op">!</span><span class="op">=</span> <span class="number">200</span> {
+            <span class="ident"><span class="kw">crate</span>::operation_deser::parse_resolve_customer_error</span>(<span class="ident">response</span>)
+        } <span class="kw">else</span> {
+            <span class="ident"><span class="kw">crate</span>::operation_deser::parse_resolve_customer_response</span>(<span class="ident">response</span>)
+        }
+    }
+}
+</code></pre></div>
+</section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../" data-current-crate="aws_sdk_marketplacemetering" data-search-index-js="../../search-index.js" data-search-js="../../search.js"></div>
+    <script src="../../main.js"></script><script src="../../source-script.js"></script><script src="../../source-files.js"></script>
+</body></html>

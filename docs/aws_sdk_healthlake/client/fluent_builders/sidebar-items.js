@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["CreateFHIRDatastore",""],["DeleteFHIRDatastore",""],["DescribeFHIRDatastore",""],["DescribeFHIRExportJob",""],["DescribeFHIRImportJob",""],["ListFHIRDatastores",""],["ListFHIRExportJobs",""],["ListFHIRImportJobs",""],["ListTagsForResource",""],["StartFHIRExportJob",""],["StartFHIRImportJob",""],["TagResource",""],["UntagResource",""]]});

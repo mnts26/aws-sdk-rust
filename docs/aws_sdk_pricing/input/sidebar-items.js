@@ -1,0 +1,1 @@
+initSidebarItems({"mod":[["describe_services_input","See `DescribeServicesInput`"],["get_attribute_values_input","See `GetAttributeValuesInput`"],["get_products_input","See `GetProductsInput`"]],"struct":[["DescribeServicesInput",""],["GetAttributeValuesInput",""],["GetProductsInput",""]]});

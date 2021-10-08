@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["CreateEndpoint",""],["DeleteEndpoint",""],["ListEndpoints",""]]});

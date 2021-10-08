@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["ApplicationState",""]],"mod":[["application_summary","See `ApplicationSummary`"]],"struct":[["ApplicationSummary",""]]});

@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["DeleteSession",""],["GetSession",""],["PostContent",""],["PostText",""],["PutSession",""]]});

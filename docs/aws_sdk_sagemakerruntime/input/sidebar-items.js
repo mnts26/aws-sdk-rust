@@ -1,0 +1,1 @@
+initSidebarItems({"mod":[["invoke_endpoint_async_input","See `InvokeEndpointAsyncInput`"],["invoke_endpoint_input","See `InvokeEndpointInput`"]],"struct":[["InvokeEndpointAsyncInput",""],["InvokeEndpointInput",""]]});

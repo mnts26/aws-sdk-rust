@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["Encoder","Primitive Type Encoder"]],"struct":[["PrimitiveParseError","An error during primitive parsing"]],"trait":[["Parse","Sealed trait for custom parsing of primitive types"]]});

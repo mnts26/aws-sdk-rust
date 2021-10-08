@@ -1,0 +1,1 @@
+initSidebarItems({"fn":[["main","Lists your DynamoDB tables and creates the table test-table."]],"struct":[["Opt",""]]});
